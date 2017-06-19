@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<script type="text/javascript" src="jquery-3.1.1.js">
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#ICAgreeButton").click(function(){
+	    opener.informedConsentAction(true);
+		opener.updateMainMenu(1);
+    	JavaScript:window.close();
+    });
+	
+	$("#ICDisagreeButton").click(function(){
+	    opener.informedConsentAction(false);
+    	JavaScript:window.close();
+    });
+});
+
+</script>
+
+</head>
+<body>
+
+<p> The purpose of this study is to investigate how the demands on attention (like task difficulty) affect memory. </p>
+
+<p> <b>Procedure:</b> In this experiment, you will be presented with visual images (e.g., images of fractals, faces, 
+houses, words, as well as Arabic numerals), which will require you to press a key depending on the current task instructions. 
+For instance, you may be asked to detect an upside-down face image via a button response.
+
+Once you are finished with the task, you will also be asked to fill out a few questionnaires about your attitudes and 
+state of mind during the experiment. If any item on the questionnaires makes you uncomfortable, feel free to skip it, 
+but please try to answer as many of the questions as you can.
+
+Based on our piloting, this task should take about 70 minutes to complete.
+</p>
+
+<p> <b>Participation:</b> Participation in this study is voluntary. You may decline to participate at any time without
+ penalty to you. If you decide to participate, you may withdraw from the study at any time by closing your Internet browser window. </p>
+
+<p><b>Risks and Benefits:</b> We know of no risks or benefits to you for participating in this research study. The 
+potential benefits of this research lie in the knowledge that will be acquired.</p>
+
+<p><b>Confidentiality:</b> This research is confidential. Amazon Mechanical Turk will provide us, the researchers, 
+only with your responses. We will not have access to your personal information.</p>
+
+<p><b>Compensation:</b> For participating in this study, you will earn $7.50 upon completion. We will screen 
+your responses prior to compensation. If you do not complete the task, or we think that you completed it to an 
+unsatisfactory standard (i.e. you do not follow the instructions), you will not be compensated.</p>
+
+<p><b>Contact Information:</b> If you have additional questions regarding this study, please feel free to ask by emailing 
+the researcher. If questions arise after the experiment, you may contact Professor Tobias Egner at tobias.egner@duke.edu 
+or 919-684-1034 or the Human Subjects Protection at campusirb@duke.edu regarding your rights as a research subject.</p>
+
+<p>Please click to indicate your consent to participate in the study.</p>
+
+<button id="ICAgreeButton" style="font-family:arial;color:black;font-size:20px;">I have read the above consent form and agree to participate in the study.</button>
+<button id="ICDisagreeButton" style="font-family:arial;color:black;font-size:20px;">I do not agree to participate in the study.</button>
+
+</body>
+</html>

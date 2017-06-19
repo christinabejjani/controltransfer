@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<link rel="stylesheet" href="SCTfull.css" type="text/css" charset="utf=8">
+<script type="text/javascript" src="jquery-3.1.1.js"></script>
+<script type="text/javascript">
+
+var curStage = 0; //this will represent our "current stage" & we will increment this with time to keep the task in order
+//this makes javascript open up our urls below (to keep task in order)
+function basicPopup(url)
+{
+	popupWindow = window.open(url,'popUpWindow','height=' + screen.height + ',width=' + screen.width + ',\
+    left=0,top=0,resizable=yes,scrollbars=yes,toolbar=no,\
+    menubar=no,location=no,directories=no,status=yes');	
+}
+
+//this function makes it so that Mturk workers can get paid by putting in their id
+function gup( name, tmpURL )
+{
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec( tmpURL );
+    if( results == null )
+        return "";
+    else
+        return results[1];
+}
+
+//these are outside the document.ready function so that they're loaded before we refer to them
+function updateMainMenu(expStage)
+{
+	curStage = expStage;
+	switch(expStage)
+	{
+		case 0: //informed consent
+			hideHTML();
+			$("#KeepScreenOpen").show();
+		    $("#Consent").show();
+			break;
+		case 1: //send them to AP task instructions
+            hideHTML();
+            $("#KeepScreenOpen").show();
+			$("#APInstructions").show();
+            $("#instruction").text("Click the button to see the instructions for the first part of this study.");
+            $("#instruction").show();
+			break;
+		case 2: //send them to AP task
+			hideHTML();
+			$("#KeepScreenOpen").show();
+		    $("#startAP").show();
+            $("#instruction").text("Click the button to start the first part of this study.");
+            $("#instruction").show();
+			break;
+		case 3: //send them to the practice instructions for the SC task
+			hideHTML();
+            $("#KeepScreenOpen").show();
+			$("#SCPracticeInstructions").show();
+            $("#instruction").text("Click the button to see the instructions for the practice round of the second part of this study.");
+            $("#instruction").show();
+			break;
+		case 4: //send them to the practice round
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#startSCPractice").show();
+            $("#instruction").text("Click the button to start the practice round of the second part of this study.");
+            $("#instruction").show();
+			break;
+		case 5: //send them to the instructions for the SC task
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#SCInstructions").show();			
+			$("#instruction").text("Click the button to see the instructions for the second part of this study.");
+            $("#instruction").show();
+			break;
+        case 6: //send them to the SC task
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#startSC").show();			
+			$("#instruction").text("Click the button to start the second part of this study.");
+            $("#instruction").show();
+			break;
+		case 7: //send them to the instructions for the SCT task
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#SCTInstructions").show();			
+			$("#instruction").text("Click the button to see the instructions for the last part of this study.");
+            $("#instruction").show();
+			break;
+        case 8: //send them to the SCT task
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#startSCT").show();			
+			$("#instruction").text("Click the button to start the last part of this study.");
+            $("#instruction").show();
+			break;
+        case 9: //send them to the post-test questionnaire, w/ demographics; emphasizes not submitting code b/c some workers have closed their browser as soon as they finish post-test questionnaire
+			hideHTML();
+			$("#KeepScreenOpen").show();
+            $("#startPostTest").show();			
+			$("#instruction").text("Click the button to fill out the post-test questionnaire. Note: Do NOT submit the code from this form as your Mturk completion code.");
+            $("#instruction").show();
+			break;
+        case 10:	//they're finished and now need to see the screen to submit their data/ID so they can get reimbursed
+			hideHTML();
+            $("#mturk_form").show();
+            $("#debriefing").show();
+            $("#end").show();
+            $("#submitButton").show();
+			break;
+			
+	}
+}
+	//if they hit agree on the consent form, they are moved to the next part in the task
+	function informedConsentAction(agreed) 
+	{
+		if (agreed == true) 
+        {
+			updateMainMenu(1);
+
+		} 
+        else 
+		{
+			hideHTML();
+			$("#NoGo").html('You either have not accepted the HIT or have not agreed to participate,<br/>\
+			or opened this page without clicking the link from MTurk.<br/>\
+			If you still want to participate, close this page and start again by clicking the link from MTurk.')
+			$("#NoGo").show();
+		}
+	}
+		
+		//here is how I exclude workers who have already participated in my task or pilot versions:
+		//I include their worker IDs in var worker_array as a string and we check if there are duplicates; if so, they cannot proceed in the task
+        var worker_array = [];
+        
+		function checkWorkerId(workerId)
+		{
+			workerId = gup('workerId', document.referrer);
+            if (jQuery.inArray(workerId, worker_array)!=-1){  // if found will return the index in the array
+				duplicateWorker=1;
+			}
+			else {
+				duplicateWorker=0;
+			}
+			if (workerId == ""){
+				duplicateWorker=0;
+			}
+			return duplicateWorker;
+		}
+
+//I have a lot of buttons/html; this saves code space
+function hideHTML() {
+    $("#ClosePage").hide();
+    $("#KeepScreenOpen").hide();
+	$("#startSCPractice").hide();
+    $("#startSCT").hide();
+    $("#startAP").hide();
+	$("#startPostTest").hide();	
+    $("#startSC").hide();
+    $("#RTs").hide();
+    $("#mturk_form").hide();
+	$("#NoGo").hide();
+	$("#SCPracticeInstructions").hide();
+	$("#SCInstructions").hide();
+    $("#APInstructions").hide();
+    $("#SCTInstructions").hide();
+    $("#Consent").hide();
+    $("#instruction").hide();
+    $("#submitButton").hide();
+    $("#debriefing").hide();
+    $("#end").hide();
+	$("#info").hide();
+    $("#PostTestQ").hide();
+    $("#demoCode").hide();
+    $("#returnButton").hide();
+}
+
+$(document).ready(function(){
+	hideHTML();
+    // clicking each of the buttons takes participants to a pop-up window with each html component; I coded each task as a separate html file
+	$("#startSCPractice").click(function(){
+        basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCPracticeFinal_v4.html");
+    });
+
+	$("#startAP").click(function(){
+        basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SSPhaseFinal_v4.html");
+    });
+    
+    $("#startSCT").click(function(){
+        basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCTPhaseFinal_v4.html");
+    });
+    
+    $("#startSC").click(function(){
+   	    basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCPhaseFinal_v4.html");
+    });
+	
+	$("#SCPracticeInstructions").click(function() {
+	    basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCPracticeInstructions_v4.html");
+	});
+
+	$("#SCInstructions").click(function() {
+	    basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCInstructions_v4.html");
+	});
+
+	$("#APInstructions").click(function() {
+	    basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SSInstructions_v4.html");
+	});
+    
+    $("#SCTInstructions").click(function() {
+	    basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/SCTInstructions_v4.html");
+	});
+	
+    //the exception is the post-test, where I use an iframe for the Qualtrics questionnaire to discourage participants from closing the browser right after finishing.
+	$("#startPostTest").click(function() {
+		$("#info").show();
+		$("#instruction").text($("#workerId").val());
+	    $("#PostTestQ").show();
+        $("#startPostTest").hide();
+        $("#demoCode").show();
+        $("#returnButton").show();
+	});
+    
+    var demoCodeArray = ['SCT2001']; // this is the code that participants are told at the end of the post-test questionnaire; they input this code into the blank provided
+	
+	$("#returnButton").click(function(){
+		var demoVCode = document.getElementById('demoCode').value;
+		if (jQuery.inArray(demoVCode, demoCodeArray)!=-1){  // if they enter the right post-test code, it advances the screen
+			updateMainMenu(10);
+		}else{ // this is to ensure that they cannot skip the post-test questionnaire
+			alert("Please fill out the post-test questionnaire!");
+		}
+	});
+	
+    //these get the worker ID + more so that the data files won't be blank
+	document.getElementById('assignmentId').value = gup('assignmentId', document.referrer);
+	document.getElementById('hitId').value = gup('hitId', document.referrer);
+	document.getElementById('workerId').value = gup('workerId', document.referrer);
+	console.log(assignmentId);
+	console.log(hitId);
+	console.log(workerId);
+    
+	//this will just close the page if they are a duplicate worker and are asked to return the HIT
+	$("#ClosePage").click(function(){
+			JavaScript:window.close();
+	});
+    
+	$("#Consent").click(function() {
+        //this is all the information we need from mTurk workers; we need them to accept the hit and get their ID, etc. and if they don't have it, we make sure they can't go on in the task
+  	    if (document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE" || document.getElementById("assignmentId").value == "") 
+		{
+            informedConsentAction(false); // if it can't read the assignment id, THEN shows that indicator saying they haven't accepted the HIT, etc.
+	    } 
+		else 
+		{
+            $("#Consent").hide(); // basically you can't view the task unless you've accepted the HIT.
+            basicPopup("https://people.duke.edu/~cb383/controltransfer/expt2/JS/v4/InformedConsent.html");
+	    }
+	});
+	
+	//here is where the duplicate worker comparison happens; if they've already done the task before, they are not allowed to see the consent form. They immediately see the text below.
+    var duplicateWorker = checkWorkerId(workerId);
+    if (duplicateWorker==1)
+        {
+            hideHTML();
+			$("#NoGo").html('You have performed this task or a pilot version before; <br/>\
+            feel free to check with me for the date. <br/>\
+            However, because we cannot take duplicate responses, <br/>\
+            I ask that you please return this HIT. Thanks!');
+			$("#NoGo").show();
+			$("#ClosePage").show();
+		}
+    else
+    {
+        updateMainMenu(0); // need this, otherwise it's a blank screen
+    }
+    
+	//I've had workers who have looked at this code and advanced in the task without actually doing the task (there is no data despite our server having a file for that worker), so I try to prevent this by preventing right clicks & accidental backspaces.
+    
+    //from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+    //disable right click
+    $(document).bind('contextmenu', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+   });
+   
+    //Stops backspace presses (8) and spaces (32);
+	//from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+  	$(function(){
+	var rx = /INPUT|SELECT|TEXTAREA/i;
+  	$(document).bind("keydown keypress", function(e){
+		if( e.which == 32 ||e.which == 8 )
+		{ // 8 == backspace
+			if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly )
+			{
+  				e.preventDefault();
+			}
+  		}
+  	});
+  	});
+    
+});
+
+</script>	
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+				<!-- sometimes workers don't know what their worker ID is, so we provide it to them.-->
+				<p id="info" style="font-family: arial; font-size: 20px; vertical-align: middle">Your worker ID is: </p>
+				<p id="instruction" style="font-family: arial; font-size: 40px">Click the button to read our informed consent form. Please make sure that you haven't already participated in this experiment.</p>
+				<iframe id="PostTestQ" src="https://duke.qualtrics.com/jfe/form/SV_0jmEYZteM2vQ461" width="800" height ="600">
+                    <p>Your browser does not support iframes. Fill out the post-test here: https://duke.qualtrics.com/jfe/form/SV_0jmEYZteM2vQ461. Then paste the code you get at the end in the blank space below.</p>
+                </iframe>
+                <p><input id="demoCode" name="demoCode" value=""></p>
+                <p><button id="returnButton" style="font-family:arial;color:black;font-size:14px;">Submit Post-Test Questionnaire Code. This is NOT the end!</button></p>
+				
+                <!-- NOTE: I DELETED THE LINE OF CODE THAT LINKED MY LAB'S SERVER. Here, you would copy the below line on mturk_form & add your lab's server as the action. -->
+				<form id="mturk_form" method="POST" action="https://www.mturk.com/mturk/externalSubmit">
+				
+					<!-- Note: these are specific to the PHP settings of my lab's server. So, in our data, "APs","SCs","PRRTs" will appear in the demographics text file, while "RTs" will include the SCT data as a log file in the folder specified as ExpName, with assignmentID as the name of the files -->
+					<input type="hidden" id="assignmentId" name="assignmentId" value="">
+					<input type="hidden" id="workerId" name="workerId" value="">
+					<input type="hidden" id="hitId" name="hitId" value="">
+					<input type="hidden" id="RTs", name="RTs", value="">
+					<input type="hidden" id="APs", name="APs", value="">
+					<input type="hidden" id="PRRTs", name="PRRTs", value="">
+					<input type="hidden" id="SCs", name="SCs", value="">
+					<input type="hidden" id="posttest" name="posttest" value="SCTFullExpt">  <!-- I use qualtrics for my post-test questionnaire b/c it's easiest for organizing that data -->
+					<input type="hidden" id="ExpName" name="ExpName" value="SCTFullExpt">
+					<p id="end" style="font-family: Arial; color: black; font-size: 24px">Please submit your HIT by clicking the submit button below. After clicking the submit button, you will see a confirmation code.  <br /> <br />
+					Please copy this code and paste it into the box on the MTurk webpage to receive credit.</p>
+					<p id="debriefing" style="font-family: Arial; color: black; font-size: 12px">
+					Thank you for your participation. In this particular study, aimed at understanding different attentional states and learning, we were looking to see if you associated specific scene images with specific probabilities.<br /> <br />
+					More specifically, did you notice that two scene images more often led to an incongruent trial (i.e., the name of the word did NOT match the color in which the word was printed) and the other two more often led to a congruent trial (i.e., the name of the word matched the color in which the word was printed)?<br /> <br />
+					If so, you may have responded more quickly to incongruent trials following incongruent trial scene images compared to congruent trial scene images, and you have may have been more accurate doing so. <br /> <br />  
+					Similarly, you may have responded more quickly and been more accurate in responding to face or house images that usually preceded these scene images in the first part of the study.<br /> <br />   
+					We predict that these images can impact later performance, but at this time we have yet to make any formal conclusions. <br /> <br />   
+                    If you want to know more, feel free to contact me at any time at chbejj2016@gmail.com. Again, thanks so much for your participation! <br /> <br />                    
+                    </p>
+					<input id="submitButton" type="submit" name="Finish" value="Submit" style="font-family: Arial; color: black; font-size: 24px">
+					
+				</form>	
+
+                <p id="KeepScreenOpen" style="font-family: arial; color: black; font-size: 48px;">Do not close this window.</p>
+                <button id="SCInstructions" style="font-family: arial; color: black; font-size: 24px;">Click to view the instructions.</button>
+                <button id="SCTInstructions" style="font-family: arial; color: black; font-size: 24px;">Click to view the instructions.</button>
+                <button id="APInstructions" style="font-family: arial; color: black; font-size: 24px;">Click to view the instructions.</button>
+                <button id="SCPracticeInstructions" style="font-family: arial; color: black; font-size: 24px;">Click to view the instructions.</button>
+                <button id="startSCPractice" style="font-family: arial; color: black; font-size: 24px;">Click to start the practice round.</button> 
+                <button id="startSC" style="font-family: arial; color: black; font-size: 24px;">Click to start the task.</button>
+                <button id="startSCT" style="font-family: arial; color: black; font-size: 24px;">Click to start the task.</button>
+                <button id="startAP" style="font-family: arial; color: black; font-size: 24px;">Click to start the task.</button>                
+                <button id="ClosePage" style="font-family: arial; color: black; font-size: 24px;">Close this page.</button>
+                <p id="NoGo" style="font-family: arial; color: black; font-size: 40px;">You either have not accpeted the HIT or have not agreed to participate, or opened this page without clicking the link from MTurk. If you still want to participate, close this page and start again by clicking the link from MTurk.</p>
+                <button id="Consent" style="font-family: arial; color: black; font-size: 24px;">Click to view the informed consent of this HIT.</button>
+				<button id="startPostTest" style="font-family: arial; color: black; font-size: 24px;">Click this button to view the post-test questionnaire.</button> 				
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

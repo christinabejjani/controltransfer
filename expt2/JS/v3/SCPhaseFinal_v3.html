@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+
+<link rel="stylesheet" href="SCTfull.css" type="text/css" charset="utf-8">
+<script type="text/javascript" src="jquery-3.1.1.js"> </script>
+<script type="text/javascript" src="jquery-ui.js"></script>
+<script type="text/javascript" src="SCstimuli.js"></script>
+<script type="text/javascript" src="shuffle.js"></script>
+<script type="text/javascript">
+
+function gup(name,tmpURL) // function specifically for mTurk: can separate worker ID from assignment ID from HIT ID
+{
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(tmpURL);
+	if (results == null)
+	{
+		return "";
+	}
+	
+	else
+	{
+		return results[1];
+	}
+}
+
+$(document).ready(function(){    
+    //Hide various buttons
+	$("#SCs").hide(); // our particular server is set up so that the html element RTs is what gets written into new data logs.
+	$("#indicator").hide();		
+	$("#endExpButton").hide();
+	$("#endBlockButton").hide();
+	$("#resize").hide();
+	$("#continueButton").hide();
+    
+    var canvas = document.getElementById("myCanvas"); // myCanvas is to make sure that everything is presented in the middle of the screen
+	var ctx = canvas.getContext("2d"); // need context to draw on canvas
+	var runNumber = 4; // there are 4 blocks in this task
+	var runCounter = -1; // i start at -1 because I add to the counter as soon as it is initialized.
+	var trialCounter = -1; // same reason
+	var trialNumber = 79; // 80 trials per block
+	var keyPressed = 0; // this is an easy way of seeing when someone actually pressed a button vs. not
+	var accuracy = 0; // default
+	var respTime = []; // default
+	var accsum = []; // accuracy feedback that they'll get at the end of the block
+	var PressCorrect = []; // this is how i mark correct answers
+    var ACCCount = 0; //this will be a counter for all the accurate trials
+	var fileNames = ["S2_1.jpg", "S2_2.jpg", "S2_3.jpg", "S2_4.jpg"]; // in order, these are my S2 images
+	var imgCount = 0; //img counter for when I'm loading the images
+	var imgs = new Array(4); //I chose to only load into an array of 4 and define when to draw each of those based off other matrices (rather than try to make an array of many images)
+	var MatrixCounter = -1; // I used this as another counter throughout the experiment (since trials are by block & trialCounter is reset)
+    var feedbackType = 0; // will tell you whether or not they've responded within the time frame
+	var Incongruent = 0; // will make analyses easier later to have congruency of each trial marked 
+    var Congruent = 0;
+	var ResponseMatrix = 0; // this to see how uneven the response buttons will be (i.e., if they have to press one more often than the other)
+	var colors = ["BLUE", "RED", "GREEN", "YELLOW"];
+	var words = ["BLUE", "RED", "GREEN", "YELLOW"];
+	var IncongruentCounter = -1; // there are individual matrices for each congruent/incongruent type, so I use separate counters
+	var CongruentCounter = -1;
+    
+	var data=[['']]; //data logfile
+	var runStart; //when a run starts
+	var logCounter = 0; //the counter for each data entry
+	var Responset; // response onset
+	var d2; // marker for when image is presented
+	var d1; // marker for runstart
+	var d3; // marker for when number stim is presented
+	var d4; // marker for when a key is presed re: #
+	var d5 = new Date();
+	var ScreenPulled; // when the DOM loads
+	ScreenPulled = d5.getTime();
+	var ImagePresent; // time when S2 image was presented
+	var StimTime; // this is the time the stimulus was presented; so RT is responset - stimttime;
+	window.hasResponse = -1; // this is to ensure that data is not currently logged
+	
+    //establish what each button will do
+	$("#startButton").show(); //start button appears when the task is called
+	$("#info").show(); // brief instructions
+	$("#startButton").click(function(){
+		$("#startButton").hide();
+		$("#info").hide();
+		runExp(); // will run my experiment function
+	});
+	
+	$("#endExpButton").click(function(){ // when the experiment is finished, this will update the main menu file (which has all the HTML files gathered) & close the window
+		$("#SCs", opener.window.document).val(data.join(";"));
+        opener.updateMainMenu(7);
+		JavaScript:window.close();
+	});
+	
+	$("#endBlockButton").click(function(){ // when a block is finished, this button would run another block
+		$("#endBlockButton").hide();
+		$("#indicator").hide();
+		runBlock();
+	});
+	
+	$("#resize").click(function(){ // to make sure that people are paying attention and don't have more than one task going, this fxn won't let a run start without a large enough window size
+		$("#resize").hide(); // once they click the button, the task will start only if the proper screen portions are in place
+		$("#indicator").hide();
+		$("#endBlockButton").hide();
+		checkSize();
+	});
+	
+	//Stops backspace presses (8) and spaces (32);
+	//from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+  	$(function(){
+  	
+	var rx = /INPUT|SELECT|TEXTAREA/i;
+  	$(document).bind("keydown keypress", function(e){
+		if( e.which == 32 ||e.which == 8 )
+		{ // 8 == backspace
+			if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly )
+			{
+  				e.preventDefault();
+			}
+  		}
+  	});
+  	});	
+	
+	function drawCross() // this is my fixation function
+	{
+		window.hasResponse = -1;
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.textBaseline="middle";
+		ctx.textAlign="center";
+		ctx.font="100px Arial"; 
+		ctx.fillStyle="black";
+		ctx.fillText("+", (canvas.width/2), (canvas.height/2)); // center screen fixation
+		setTimeout(drawStroop,1000); //1000 ms ISI
+	}
+	
+    //simple "runExp" to separate out the WHOLE experiment from individual blocks
+	function runExp()
+	{
+		logCounter = 0;
+		Prep(); // determining trial type and stim presented
+		loadImage(); // loading the S2 images
+	}
+	
+	// adapted from: http://stackoverflow.com/questions/3437786/get-the-size-of-the-screen-current-web-page-and-browser-window
+	function checkSize() 
+	{
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+		if (w < 800 || h < 600) // 800 by 600 is the lowest resolution on my laptop; seems like a good "minimum" (basically need 500 x 500 at least)
+        {
+			$("#indicator").text('Your browser window is too small to display the images properly. Please increase the window size or your screen resolution.');
+  			$("#indicator").show();
+			$("#resize").show();
+		} 
+		else // if their screen is the proper size...
+		{
+			$("#resize").hide();
+			countDown(3); // start the countdown for the experiment
+		}	
+	}
+	
+	function drawStroop()
+	{ 
+	ctx.clearRect(0,0,canvas.width, canvas.height);
+	ctx.textBaseline="middle";
+	ctx.textAlign="center";
+	ctx.font="100px Arial";
+	d3 = new Date();
+	StimTime = d3.getTime() - runStart;
+    if (TrialType[MatrixCounter] == 2) //congruent
+	{
+		CongruentCounter++;
+        if (CongFactor[CongruentCounter] == 1) // blue in blue
+        {
+			ctx.fillStyle="blue";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+		}
+		else if (CongFactor[CongruentCounter] == 2) //red in red
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+		}
+		else if (CongFactor[CongruentCounter] == 3) //green in green
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+		}
+		else if (CongFactor[CongruentCounter] == 4) //yellow in yellow
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+		}
+		Incongruent = 0;
+		Congruent = 1;
+	
+	}
+	else if (TrialType[MatrixCounter] == 1) //incongruent
+	{
+		IncongruentCounter++;
+        if (IncongFactor[IncongruentCounter] == 5) // 5 means BLUE in RED
+        {
+			ctx.fillStyle="red";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+		}
+		else if (IncongFactor[IncongruentCounter] == 6) //6 BLUE in YELLOW
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+		}
+		else if (IncongFactor[IncongruentCounter] == 7) //7 BLUE in GREEN;
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+		}
+		else if (IncongFactor[IncongruentCounter] == 8) //8 RED in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+		}
+		else if (IncongFactor[IncongruentCounter] == 9) //9 RED in YELLOW;
+        {
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+		}
+		else if (IncongFactor[IncongruentCounter] == 10) //10 RED in GREEN;
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+		}
+		else if (IncongFactor[IncongruentCounter] == 11) //11 YELLOW in RED;
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+		}
+		else if (IncongFactor[IncongruentCounter] == 12) //12 YELLOW in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+		}
+		else if (IncongFactor[IncongruentCounter] == 13) //13 YELLOW in GREEN;
+        {
+			ctx.fillStyle="green";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+		}
+		else if (IncongFactor[IncongruentCounter] == 14) //14 GREEN in RED;
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+		}
+		else if (IncongFactor[IncongruentCounter] == 15) //15 GREEN in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+		}
+		else if (IncongFactor[IncongruentCounter] == 16) //16 GREEN in YELLOW
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+		}
+		Incongruent = 1;
+		Congruent = 0;
+	}    
+	window.hasResponse = 0; // only after stim presentation will responses be recorded
+	setTimeout(checkResponse, 1000); // after 1 sec, this function will transition to the show Feedback fxn
+	}
+	
+	function runBlock() // main task is separated into 2 blocks
+	{
+		runCounter++;
+		if (runCounter < runNumber)
+		{
+			$("#redo").hide(); // hiding various HTML objects
+			$("#instructions").hide();
+            $("#indicator").hide();
+			trialCounter = -1; // resets the trial counter in case there are multiple blocks
+            window.hasResponse = -1; // make sure no buttons have been recorded when the task hasn't even started
+			ctx.clearRect(0,0,canvas.width, canvas.height); // this is essentially like clearing the screen in matlab
+			if (runCounter == 1 || runCounter == 2 || runCounter == 3)
+                {
+                ACCCount = 0; // reset acc count before next block
+                }
+            checkSize();
+		}
+		else
+		{
+            $("#indicator").hide();
+			$("#endExpButton").show(); // finished with all the blocks in a task, expt is ended
+		}
+	}
+	
+	function loadImage() // this is my load image function; have to load before I start drawing b/c can take time
+	{
+		if (imgCount < 4)
+		{
+			imgs[imgCount] = new Image();
+			imgs[imgCount].src = fileNames[imgCount];
+			imgs[imgCount].onload = loadImage;
+			imgCount++;
+		}
+		else // when the images have been loaded, run the block
+		{
+			runBlock();
+		}
+	}
+	
+	function drawS2() // this is my draw S2 function
+	{
+		window.hasResponse = -1;
+		trialCounter++; // I moved the trial counter here so that it would record the ITI button presses correctly
+		MatrixCounter++;
+		d2 = new Date;
+		ImagePresent = d2.getTime() - runStart;
+		if (StimuliPresented[MatrixCounter] == 1)
+		{
+			ctx.drawImage(imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266); // - images are 400 x 266; half of 400 is 200 and half of 266 is 133, so this gives a center screen presentation
+		}
+		else if (StimuliPresented[MatrixCounter] == 2)
+		{
+			ctx.drawImage(imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+		}
+		else if (StimuliPresented[MatrixCounter] == 3)
+		{
+			ctx.drawImage(imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+		}
+		else if (StimuliPresented[MatrixCounter] == 4)
+		{
+			ctx.drawImage(imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+		}
+	setTimeout(drawCross, 1000);
+	}
+	
+	function showITI()
+	{
+	ctx.clearRect(0,0,canvas.width, canvas.height); // no matter what, clear the screen
+	window.hasResponse = -1;
+    
+	if (trialCounter < trialNumber)
+	{
+		$("#indicator").hide();
+		keyPressed = 0;
+		setTimeout(drawS2,2000); // ITI of 2 seconds; then goes to the stimulus presentation
+	}
+	else // then you're done with the block!
+	{   
+		$("#indicator").hide();
+		var accsum = Math.round((ACCCount/80) * 100); // calculates accuracy percentage (#correct trials/total)*100 for each block
+		$("#indicator").text("Your accuracy on this block was " + accsum + " percent.");
+		$("#indicator").show();
+		$("#endBlockButton").show();
+	}
+	}
+	
+	function countDown(time) // the countdown is meant to "prepare" the subjects that the experiment is beginning
+	{
+		if (time > 0)
+		{
+			$("#startButton").hide();
+			d1 = new Date();
+			runStart = d1.getTime() - ScreenPulled;
+			ctx.textBaseline="middle";
+			ctx.textAlign="center";
+			ctx.fillStyle="black";
+			ctx.font="200px Arial";
+			ctx.clearRect(0,0, canvas.width, canvas.height);
+			ctx.fillText("" + time, canvas.width / 2, canvas.height / 2);
+			setTimeout(function(){countDown(time - 1)},1000);
+		}
+		else
+		{
+			showITI(); // once the countdown is finished, it goes to the ITI; this way, subs are less likely to mess up the first trial, i.e. if the number was suddenly presented right after a 3-2-1 counter
+		}
+	}
+    
+	function checkResponse()
+	{
+		if (window.hasResponse == 0) //check if a response has been made
+		{
+			// if it hasn't been made, it will get logged as ITIResp
+			data[logCounter++] = ["SCRespITI:", 3, logCounter, trialCounter, MatrixCounter, runCounter, Congruent, Incongruent, StimuliPresented[MatrixCounter], StimProbTotal[MatrixCounter], TrialType[MatrixCounter], CongFactor[CongruentCounter], IncongFactor[IncongruentCounter], PressCorrect, ResponseMatrix, keyPressed, 0, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
+			if (feedbackType = 1) // if RT > 1000, show the negative respond quicker FB
+			{
+				setTimeout(showFeedback)
+			}
+			else // otherwise go to the showITI fxn (i don't think this is actually necessary to include)
+			{
+				setTimeout(showITI)
+			}
+			window.hasResponse = -1; // set the response to not check for responses again
+		}
+		else // if they have already responded, go to the ITI
+		{
+			setTimeout(showITI)
+		}
+	}
+	
+    function showFeedback() // fb time-out fxn
+	{
+	window.hasResponse = -1;
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+	ctx.textBaseline="middle";
+	ctx.textAlign="center";
+	ctx.fillStyle="black";
+	ctx.font="75px Arial"; 
+	ctx.fillText("Respond quicker",(canvas.width / 2), (canvas.height / 2), 500); // 500 is to state limit of the canvas width
+    setTimeout(showITI, 1000);
+	}
+	
+	$("body").keypress(function(event) // in order to have fixed length trials, NO FUNCTIONS can be run inside the keypress function; also, clearTimeout CANNOT be used as that will erase the timeline linking the fxns
+		{        
+		if (window.hasResponse == 0) // this ensures that it's getting the key that was pressed AFTER the number stimulus was presented, even if it's in the ITI and not when the number is there
+		{
+                window.hasResponse = -1; // this makes certain that keypresses aren't logged after that
+                keyPressed = String.fromCharCode(event.which); // identifies which key was pressed
+				d4 = new Date();
+				Responset = d4.getTime() - runStart;
+				respTime = Responset - StimTime;
+			
+			if (keyPressed == PressCorrect) // compares keypress to the correct press for a trial
+				{
+					if (respTime < 1000)
+					{
+						accuracy = 1;
+                        feedbackType = 0;
+						ACCCount++; 
+					}
+					else
+					{
+						feedbackType = 1;
+                        accuracy = 0;
+					}
+				}
+			else // if they didn't press the right key, they might not have responded OR responded incorrectly
+				{
+					if (respTime < 1000)
+					{
+						accuracy = 0;
+						feedbackType = 0;
+					}
+					else
+					{
+						feedbackType = 1;
+                        accuracy = 0;
+					}
+				}	
+		data[logCounter++] = ["SCResp:", 3, logCounter, trialCounter, MatrixCounter, runCounter, Congruent, Incongruent, StimuliPresented[MatrixCounter], StimProbTotal[MatrixCounter], TrialType[MatrixCounter], CongFactor[CongruentCounter], IncongFactor[IncongruentCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
+		console.log(accuracy);
+        }
+        });
+		
+	//disabling mouse clicks in the task
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+	var event1 = $(document).click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+	});
+	
+
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+    //disable right click
+    $(document).bind('contextmenu', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+   });
+	
+});	
+
+</script>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td>
+				<!--All of these are buttons or page elements 'text-align' and 'align' do the same thing, but align is for older browsers-->
+                <p id="indicator" style="font-family: Arial; color: black; font-size: 50px; text-align:center; align: center"></p>
+				<button id="endExpButton" style="font-family: Arial; color: black; font-size: 20px; text-align:center; align: center">This phase has ended. Click this button to continue onto the next part of the study.</button>
+				<p><button id="endBlockButton" style="font-family: Arial; color: black; text-align:center; align: center">You may take a short break. Click this button when you're ready to continue the task.</button></p>
+				<p><button id="resize" style="font-family: Arial; color: black; text-align:center; align: center">Try resizing again.</button></p>
+                <!-- the style here was so that the canvas wouldn't get selected by the left click-->
+				<p id="info" style="font-family: Arial; color: black; font-size: 24px; text-align: center; align: center">Once you're ready to start, press the button below.</p>
+				<p> <button id ="startButton" style="font-family: Arial; color: black; text-align:center; align:center">Start the Task</button></p>
+				<canvas id="myCanvas" width="600" height="600" style="user-select: none; -webkit-user-select:none; -moz-user-select:none"></canvas>
+			</td>
+		</tr>
+	</table>
+<input type="hidden" id="SCs", name="SCs", value="">
+</body>
+</html>
