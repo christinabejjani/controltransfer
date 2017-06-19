@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html><head>
+
+<script type="text/javascript" src="jquery-3.1.1.js"> </script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+    var slideNum=0;
+	var maxNum=6;
+	//hide all the buttons at the start of the instructions
+    $("#ReturnButton").hide();
+	$("#NextButton").hide();
+	$("#Instructions").hide();
+	$("#LastPrevButton").hide();
+
+	//when someone clicks the return button, it will update the main menu (i.e., the script whese these instructions are listed), close this javascript, and then presumably that script will continue
+    $("#ReturnButton").on('click', function(){
+    	opener.updateMainMenu(6);
+    	JavaScript:window.close();
+	});
+
+	//when someone clicks on the next button, it will hide the "return" button (i.e., they are not at the end yet) and add to slideNum (letting you know what slide number of instructions they're on)
+	$("#NextButton").on('click', function(){
+		$("#ReturnButton").hide();
+	    slideNum=slideNum+1;
+		moveShow(slideNum);
+	});
+
+	//when someone clicks on the start button, the only two buttons featured are the previous button and the next button
+	$("#StartButton").on('click', function(){
+		$("#ReturnButton").hide();
+		$("#StartButton").hide()
+		$("#NextButton").show()
+	    moveShow(slideNum);
+	});
+	
+	//this is in case they really want to scroll through all the instructions again instead of moving onto the task
+	$("#LastPrevButton").on('click',function(){
+		$("#ReturnButton").hide();
+		$("#Instructions").hide();
+		$("#Instructions1").hide();		
+	    $("#Instructions2").hide();
+		$("#Instructions3").hide();
+		$("#Instructions4").hide();
+		$("#Instructions5").hide();
+		$("#Instructions6").hide();
+		slideNum=slideNum-6;
+		moveShow(slideNum);
+	});
+
+	function moveShow(slideNum){
+	
+	//slide num is slowly incremented with each button press, so that reveals each new line of text.
+	if (slideNum==0) {
+	   $("#Instructions").text('This part is similar to the practice phase you completed; however, you will no longer receive feedback, and you will be presented with images of scenes and color-words. Each image will precede the presentation of color-words and may contain information about the difficulty of the upcoming trial.');
+	   $("#Instructions").show() 		
+	   $("#LastPrevButton").hide();
+	} 
+	else if (slideNum==1) 
+	{
+		$("#Instructions1").text('On each trial, you only need to respond to the word stimuli. Please respond to the color the word is printed in, while ignoring the meaning of the word.');
+		$("#Instructions1").show(); 
+	} 
+	else if (slideNum==2) 
+	{
+		$("#Instructions2").text('Press z if the word is BLUE, x if the word is GREEN, n if the word is RED, and m if the word is YELLOW.');
+		$("#Instructions2").show();
+	} 
+	else if (slideNum==3) 
+	{
+	   $("#Instructions3").text('Please enlarge this window to encompass the entire computer screen and sit at a comfortable distance from the screen.');   
+		$("#Instructions3").show();
+	   } 
+	else if (slideNum==4) 
+	{
+	   $("#Instructions4").text('Respond to each color-word as quickly as possible while still being accurate. You will have until the color-word disappears to make your response. Always press the z key with your LEFT middle finger, the x key with your LEFT index finger, the n key with your RIGHT index finger, and the m key with your RIGHT middle finger.');
+		$("#Instructions4").show();	   
+	} 
+	else if (slideNum==5) 
+	{
+	   $("#Instructions5").text('Please stay focused during the experiment. You will not be paid if you have a total accuracy of less than 80%.');
+	   $("#Instructions5").show();
+	}
+	else if (slideNum==6) 
+	{
+	   $("#Instructions6").text('This task has 4 blocks, which will take 6.75 minutes each. Press the button to begin the task.');
+	   	$("#Instructions6").show();
+	}
+	
+	//this dictates which buttons will be made available to subjects
+	if (slideNum==0) 
+	{
+	   $("#NextButton").show(); 
+	} 
+	else if (slideNum < maxNum) 
+	{
+	   $("#NextButton").show(); 
+	} 
+	else 
+	{
+	   $("#NextButton").hide();
+	   $("#ReturnButton").show();
+	   $("#LastPrevButton").show();	   
+	} 
+	
+	}
+});
+</script>
+
+</head>
+<body>
+
+<h2 style="font-family:arial;font-size:30px">Instructions</h2>
+<p style="font-family:arial;font-weight:bold; font-size:24px">Please read these instructions carefully before you begin the experiment.</p>
+
+  <table>
+      <tr>
+  	    <td>
+  			<p id="Instructions" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions1" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions2" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions3" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions4" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions5" style="font-family:arial;color:black;font-size:22px"></p>
+			<p id="Instructions6" style="font-family:arial;color:black;font-size:22px"></p>
+  		</td>
+  	</tr>
+  </table>
+&nbsp;
+<p></p>
+<button id="ReturnButton" style="font-family:arial;color:black;font-size:20px;vertical-align: middle">Click to exit instructions and start task</button>
+<button id="NextButton" style="font-family:arial;color:black;font-size:20px;vertical-align: middle">Next</button>
+<button id="StartButton" style="font-family:arial;color:black;font-size:20px;vertical-align: middle">Next</button>
+<button id="LastPrevButton" style="font-family:arial;color:black;font-size:20px;vertical-align: middle">Previous</button>
+</body>
+</html>
