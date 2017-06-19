@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+
+<link rel="stylesheet" href="SCTfull.css" type="text/css" charset="utf-8">
+<script type="text/javascript" src="jquery-3.1.1.js"> </script>
+<script type="text/javascript" src="SSStimuli.js"></script>
+<script type="text/javascript">
+
+function gup(name,tmpURL) // function specifically for mTurk: can separate worker ID from assignment ID from HIT ID
+{
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(tmpURL);
+	if (results == null)
+	{
+		return "";
+	}
+	
+	else
+	{
+		return results[1];
+	}
+}
+
+$(document).ready(function(){    
+    //Hide various buttons
+	$("#APs").hide();
+	$("#indicator").hide();		
+	$("#endExpButton").hide();
+	$("#endBlockButton").hide();
+	$("#resize").hide();
+	$("#continueButton").hide();
+    
+    var canvas = document.getElementById("myCanvas"); // myCanvas is to make sure that everything is presented in the middle of the screen
+	var ctx = canvas.getContext("2d"); // need context to draw on canvas
+	var runNumber = 4; // there are 4 blocks in this task
+	var runCounter = -1; // i start at -1 because I add to the counter as soon as it is initialized.
+	var trialCounter = -1; // same reason
+	var trialNumber = 59; // 60 trials per block
+	var keyPressed = 0; // this is an easy way of seeing when someone actually pressed a button vs. not
+	var accuracy = 0;  // default
+	var respTime = []; // default
+	var accsum = []; // accuracy feedback that they'll get at the end of the block
+	var PressCorrect = []; // this is how i mark correct answers
+    var ACCCount = 0; //this will be a counter for all the accurate trials
+	var S1fileNames = ["S1_1.jpg", "S1_2.jpg", "S1_3.jpg", "S1_4.jpg"];
+	var S2fileNames = ["S2_1.jpg", "S2_2.jpg", "S2_3.jpg", "S2_4.jpg"]; // my images are ordered by number
+	var imgCount = 0; //img counter for when I'm loading the images
+	var S1imgs = new Array(4);
+	var S2imgs = new Array(4);    
+    var MatrixCounter = -1; // I used this as another counter throughout the experiment (since trials are by block & trialCounter is reset, but I've made large matrices for the entire expt)
+    var feedbackType = 0; // will define which feedback to provide
+    var ResponseMatrix = 0; // just using to mark # times someone should've pressed left or right button to make sure they're equal
+    var Valid = 0; // will make analyses easier later to have validity of each trial marked
+    var Invalid = 0;
+    
+	var data=[['']]; //data logfile
+	var runStart; //when a run starts
+	var logCounter = 0; //the counter for each data entry
+	var Responset; // response onset
+	var d2; // marker for when S1 image is presented
+	var d1; // marker for runstart
+	var d3; // marker for when S2 stim is presented
+	var d4; // marker for when a key is presed re: #
+	var d5 = new Date();
+	var ScreenPulled; // when the DOM loads
+	ScreenPulled = d5.getTime();
+	var ImagePresent; // time when S1 image was presented
+	var StimTime; // time when S2 image was presented; so RT is responset - stimttime;
+	window.hasResponse = -1; // this is to ensure that data is not currently logged
+	
+    //establish what each button will do
+	$("#startButton").show(); //start button appears when the task is called
+	$("#info").show(); // brief instructions
+	$("#startButton").click(function(){
+		$("#startButton").hide();
+		$("#info").hide();
+		runExp(); // will run my experiment function
+	});
+	
+    // when the experiment is finished, this will update the main menu file (which has all the HTML files gathered) & close the window
+	$("#endExpButton").click(function(){
+		$("#APs", opener.window.document).val(data.join(";")); //this makes sure that the data is linked to APs which is an element that gets written to our data file in the main menu file
+        opener.updateMainMenu(3);
+		JavaScript:window.close();
+	});
+	
+    // when a block is finished, this button would run another block
+	$("#endBlockButton").click(function(){
+		$("#endBlockButton").hide();
+		$("#indicator").hide();
+		runBlock();
+	});
+	
+	$("#resize").click(function(){ // to make sure that people are paying attention and don't have more than one task going, this fxn won't let a run start without a large enough window size
+		$("#resize").hide(); // once they click the button, the task will start only if the proper screen portions are in place
+		$("#indicator").hide();
+		$("#endBlockButton").hide();
+		checkSize();
+	});
+	
+	//Stops backspace presses (8) and spaces (32);
+	//from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+  	$(function(){
+	var rx = /INPUT|SELECT|TEXTAREA/i;
+  	$(document).bind("keydown keypress", function(e){
+		if( e.which == 32 ||e.which == 8 )
+		{ // 8 == backspace
+			if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly )
+			{
+  				e.preventDefault();
+			}
+  		}
+  	});
+  	});
+
+    //adapted from: http://stackoverflow.com/questions/3437786/get-the-size-of-the-screen-current-web-page-and-browser-window
+	function checkSize() 
+	{
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+		if (w < 800 || h < 600) // 800 by 600 is the lowest resolution on my laptop; seems like a good "minimum" (basically need 500 x 500 at least)
+        {
+			$("#indicator").text('Your browser window is too small to display the images properly. Please increase the window size or your screen resolution.');
+  			$("#indicator").show();
+			$("#resize").show();
+		} 
+		else // if their screen is the proper size...
+		{
+			$("#resize").hide();
+			countDown(3); // start the countdown for the experiment
+		}	
+	}
+
+    function countDown(time) // the countdown is meant to "prepare" the subjects that the experiment is beginning
+	{
+		if (time > 0)
+		{
+			$("#startButton").hide();
+			d1 = new Date();
+			runStart = d1.getTime() - ScreenPulled; // this is the official time each run has started, not just when the task is pulled up
+			ctx.textBaseline="middle";
+			ctx.textAlign="center";
+			ctx.fillStyle="black";
+			ctx.font="200px Arial";
+			ctx.clearRect(0,0, canvas.width, canvas.height);
+			ctx.fillText("" + time, canvas.width / 2, canvas.height / 2);
+			setTimeout(function(){countDown(time - 1)},1000);
+		}
+		else
+		{
+			showITI(); // once the countdown is finished, it goes to the ITI; this way, subs are less likely to mess up the first trial, i.e. if the stim was presented 1st
+		}
+	}
+
+	loadImage(); // HAVE to put loadImage outside of call back fxns because JS freaks out when loading 2 img matrices and then trying to proceed w/ task
+	
+     //simple "runExp" to separate out the WHOLE experiment from individual blocks
+	function runExp()
+	{
+		logCounter = 0;
+        Prep(); // i didn't have to put this in a fxn; this is to make the matrices
+		runBlock(); // run the block
+	}
+    
+    function loadImage() // this is my load image function; have to load before I start drawing b/c can take time
+	{
+		if (imgCount < 4) // 4 images for each image type
+		{
+			S1imgs[imgCount] = new Image();
+			S1imgs[imgCount].src = S1fileNames[imgCount];
+			S1imgs[imgCount].onload = loadImage;
+            
+            S2imgs[imgCount] = new Image();
+			S2imgs[imgCount].src = S2fileNames[imgCount];
+			S2imgs[imgCount].onload = loadImage;
+
+			imgCount++;
+		}
+	}
+    
+    function runBlock() // main task is separated into 4 blocks
+	{
+		runCounter++;
+		if (runCounter < runNumber)
+		{
+			$("#redo").hide(); // hiding various HTML objects
+			$("#instructions").hide();
+            $("#indicator").hide();
+            $("#endExpButton").hide();
+			trialCounter = -1; // resets the trial counter since there are multiple blocks
+            window.hasResponse = -1; // make sure no buttons have been recorded when the block hasn't even started
+			ctx.clearRect(0,0,canvas.width, canvas.height); // this is essentially like clearing the screen in matlab
+			if (runCounter == 1 || runCounter == 2 || runCounter == 3) // on the second, third, and fourth runs...
+            {
+                ACCCount = 0; // reset acc count before next block; this will ensure accurate feedback at the end of the block (block acc)
+            }
+            checkSize(); // make sure their screen size is ok before starting the task
+		}
+		else // if they've finished all 4 runs/blocks, show them the end exp button
+		{
+            $("#indicator").hide();
+			$("#endExpButton").show();
+		}
+	}
+    
+    function drawS1() // Trial structure S1 -> ISI -> S2 -> ITI -> S1, etc.
+	{
+	ctx.clearRect(0,0,canvas.width, canvas.height);
+	d2 = new Date;
+	ImagePresent = d2.getTime() - runStart;
+
+        if (StimuliPresented[MatrixCounter] == 1) // #s determine whether S1 will validly or invalidly predict its associated pair image
+        {
+			ctx.drawImage(S1imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 2)
+		{
+			ctx.drawImage(S1imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 3)
+		{
+			ctx.drawImage(S1imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 4)
+		{
+			ctx.drawImage(S1imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+        else if (StimuliPresented[MatrixCounter] == 5)
+        {
+			ctx.drawImage(S1imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 6)
+		{
+			ctx.drawImage(S1imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 7)
+		{
+			ctx.drawImage(S1imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 8)
+		{
+			ctx.drawImage(S1imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+        else if (StimuliPresented[MatrixCounter] == 9)
+        {
+			ctx.drawImage(S1imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 10)
+		{
+			ctx.drawImage(S1imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 11)
+		{
+			ctx.drawImage(S1imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 12)
+		{
+			ctx.drawImage(S1imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+        else if (StimuliPresented[MatrixCounter] == 13)
+        {
+			ctx.drawImage(S1imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 14)
+		{
+			ctx.drawImage(S1imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 15)
+		{
+			ctx.drawImage(S1imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}
+		else if (StimuliPresented[MatrixCounter] == 16)
+		{
+			ctx.drawImage(S1imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 200), 400, 400);
+		}   
+	Valid = 0;
+    Invalid = 0; // sets these variables back to 0 until S2 presentation
+    feedbackType = 0; // likewise for feedback type
+    window.hasResponse = -1; // won't register any responses here
+	setTimeout(drawCross, 750); // transition to fixation
+	}
+    
+	function drawCross() // this is my fixation function
+	{
+		window.hasResponse = -1; // can't respond until S2 image shows
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.textBaseline="middle";
+		ctx.textAlign="center";
+		ctx.font="100px Arial"; 
+		ctx.fillStyle="black";
+		ctx.fillText("+", (canvas.width/2), (canvas.height/2)); // center screen fixation
+		setTimeout(drawS2,500); //500 ms ISI
+	}
+	
+	function drawS2()
+	{
+	ctx.clearRect(0,0,canvas.width, canvas.height);
+	d3 = new Date();
+	StimTime = d3.getTime() - runStart;
+        if (StimuliPresented[MatrixCounter] == 1) //1 through 4 are all valid; S1_1 means S2_1 etc.
+        {
+			ctx.drawImage(S2imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "a";
+            ResponseMatrix = 1; // will record this to make sure that each button should also have been pressed equally
+            Valid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 2)
+		{
+			ctx.drawImage(S2imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266); //S2 images aren't 400 x 400; they're 400 x 266
+            PressCorrect = "s";
+            ResponseMatrix = 2;
+            Valid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 3)
+		{
+			ctx.drawImage(S2imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "k";
+            ResponseMatrix = 3;
+            Valid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 4)
+		{
+			ctx.drawImage(S2imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "l";
+            ResponseMatrix = 4;
+            Valid = 1;
+		}
+        else if (StimuliPresented[MatrixCounter] == 5)  // 5 means stim 1 with stim 2
+        {
+			ctx.drawImage(S2imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "s";
+            ResponseMatrix = 2;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 6) // 6 means stim 1 with stim 3
+		{
+			ctx.drawImage(S2imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "k";
+            ResponseMatrix = 3;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 7) // 7 means stim 1 with stim 4
+		{
+			ctx.drawImage(S2imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "l";
+            ResponseMatrix = 4;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 8) // 8 means stim 2 with stim 1
+		{
+			ctx.drawImage(S2imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "a";
+            ResponseMatrix = 1;
+            Invalid = 1;
+		}
+        else if (StimuliPresented[MatrixCounter] == 9) // 9 means stim 2 with stim 3
+        {
+			ctx.drawImage(S2imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "k";
+            ResponseMatrix = 3;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 10) // 10 means stim 2 with stim 4
+		{
+			ctx.drawImage(S2imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "l";
+            ResponseMatrix = 4;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 11) // 11 means stim 3 with stim 1
+		{
+			ctx.drawImage(S2imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "a";
+            ResponseMatrix = 1;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 12) // 12 means stim 3 with stim 2
+		{
+			ctx.drawImage(S2imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "s";
+            ResponseMatrix = 2;
+            Invalid = 1;
+		}
+        else if (StimuliPresented[MatrixCounter] == 13) // 13 means stim 3 with stim 4
+        {
+			ctx.drawImage(S2imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "l";
+            ResponseMatrix = 4;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 14) // 14 means stim 4 with stim 1
+		{
+			ctx.drawImage(S2imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "a";
+            ResponseMatrix = 1;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 15) // 15 means stim 4 with stim 2
+		{
+			ctx.drawImage(S2imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "s";
+            ResponseMatrix = 2;
+            Invalid = 1;
+		}
+		else if (StimuliPresented[MatrixCounter] == 16) // 16 means stim 4 with stim 3
+		{
+			ctx.drawImage(S2imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 133), 400, 266);
+            PressCorrect = "k";
+            ResponseMatrix = 3;
+            Invalid = 1;
+		}
+        
+	window.hasResponse = 0; // only after stim presentation will responses be recorded
+	setTimeout(showFeedback, 750); // after 750 msec, this function will transition to the show Feedback fxn
+	}
+	
+    function showFeedback() // they get feedback every time
+	{
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+	ctx.textBaseline="middle";
+	ctx.textAlign="center";
+	ctx.fillStyle="black";
+	ctx.font="75px Arial"; // had to decrease fb size so it fits in my 500x500 canvas (+ respond quicker needs more space)
+		if (feedbackType == 1) // these fb types are coded below, where the keypress is
+		{
+			ctx.fillText("Correct", (canvas.width / 2), (canvas.height / 2), 500);
+		}
+		else // so if their fb type says they're not correct...
+        {        
+            if (feedbackType == 2) // fb type 2 was still under "if window.hasResponse = 0" aka if they responded; so it established incorrect response
+			{
+				ctx.fillText("Incorrect", (canvas.width / 2), (canvas.height / 2), 500);
+			}
+            else // and if they're not incorrect, they haven't responded
+			{
+				ctx.fillText("Respond quicker",(canvas.width / 2), (canvas.height / 2), 500);
+                accuracy = 0;
+				data[logCounter++] = ["APRespITI:", 1, logCounter, trialCounter, MatrixCounter, runCounter, Valid, Invalid, StimuliPresented[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
+                //data log fxns via keypress; here i record in case they haven't pressed and i need the data recorded
+			}
+        }
+	window.hasResponse = -1; // reset to no possible response, since they've gotten fb
+    setTimeout(showITI, 1000);	// after 1 sec of fb, go to the ITI
+	}
+	
+	function showITI()
+	{
+	ctx.clearRect(0,0,canvas.width, canvas.height); // no matter what, clear the screen
+	window.hasResponse = -1; // again can't respond during ITI
+    
+		if (trialCounter < trialNumber)
+		{
+			trialCounter++; // advance the counters
+			MatrixCounter++;
+			$("#indicator").hide();
+			keyPressed = 0;
+			setTimeout(drawS1, 1500); // ITI of 1.5 seconds; then goes to the stimulus presentation
+		}
+		else // then you're done with the block!
+		{   
+			$("#indicator").hide();
+			var accsum = Math.round((ACCCount/60) * 100); // calculates accuracy percentage (#correct trials/total)*100 for each block
+			$("#indicator").text("Your accuracy on this block was " + accsum + " percent.");
+			$("#indicator").show();
+			$("#endBlockButton").show();
+		}
+	}
+	
+	$("body").keypress(function(event) // in order to have fixed length trials, NO FUNCTIONS can be run inside the keypress function; also, clearTimeout CANNOT be used as that will erase the timeline linking the fxns
+	{        
+		if (window.hasResponse == 0) // this ensures that it's getting the key that was pressed AFTER the stim was presented
+		{
+            window.hasResponse = -1; // this makes certain that keypresses aren't logged after that one
+            keyPressed = String.fromCharCode(event.which); // identifies which key was pressed
+            d4 = new Date();
+			Responset = d4.getTime() - runStart;
+			respTime = Responset - StimTime;
+			
+			if (keyPressed == PressCorrect) // compares keypress to the correct press for a trial
+			{
+				if (respTime < 750)
+				{
+					accuracy = 1; // correct
+					feedbackType = 1;
+					ACCCount++; //only add up the number of correct trials to give the right "total" acc fb later
+				}
+				else
+				{
+					accuracy = 0; // incorrect
+					feedbackType = 3;
+				}
+			}
+			else // if they didn't press the right key, they responded incorrectly
+			{
+				if (respTime < 750)
+				{
+					accuracy = 0;
+					feedbackType = 2;
+				}
+				else
+				{
+					accuracy = 0;
+					feedbackType = 3;
+				}
+			}	
+		data[logCounter++] = ["APResp:", 1, logCounter, trialCounter, MatrixCounter, runCounter, Valid, Invalid, StimuliPresented[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
+        }
+        });
+		
+	//disabling mouse clicks in the task
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+	var event = $(document).click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+	});
+	
+
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+    //disable right click
+    $(document).bind('contextmenu', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+   });
+	
+});	
+
+</script>
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td>
+				<!--All of these are buttons or page elements 'text-align' and 'align' do the same thing, but align is for older browsers-->
+                <p id="indicator" style="font-family: Arial; color: black; font-size: 50px; text-align:center; align: center"></p>
+				<p><button id="endExpButton" style="font-family: Arial; color: black; font-size: 20px; text-align:center; align: center">This task has ended. Click this button to continue onto the next part of the study.</button></p>
+				<p><button id="endBlockButton" style="font-family: Arial; color: black; text-align:center; align: center">You may take a short break. Click this button when you're ready to continue the task.</button></p>
+				<p><button id="resize" style="font-family: Arial; color: black; text-align:center; align: center">Try resizing again.</button></p>
+                <!-- the style here was so that the canvas wouldn't get selected by the left click-->
+				<p id="info" style="font-family: Arial; color: black; font-size: 24px; text-align: center; align: center">Once you're ready to start, press the button below.</p>
+				<p> <button id ="startButton" style="font-family: Arial; color: black; text-align:center; align:center">Start the task</button></p>
+				<canvas id="myCanvas" width="600" height="600" style="user-select: none; -webkit-user-select:none; -moz-user-select:none"></canvas>
+			</td>
+		</tr>
+	</table>
+<input type="hidden" id="APs", name="APs", value="">
+</body>
+</html>
