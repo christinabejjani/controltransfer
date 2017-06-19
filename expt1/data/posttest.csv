@@ -1,0 +1,77 @@
+version,subjID,Mem1,Mem2,Mem3,Mem4,ExplicitMem,Q1_SS_SystematicVariation,"If so, what?",Q2,Q3,Q4,ExplicitTaskAwareness,Q1_SC_SystematicVariation,Q1_SCT_SystematicVariation,Q2_SceneSkyPresence,Q2_SceneColorScheme,Q2_SceneTreeFrequency,Q2_ImageType,Q2_FeatureType,Q2_LightType,Q3_SC_ForcedChoicePerformance,Q3_SCT_ForcedChoicePerformance,Q3_SC1,Q3_SC2,Q3_SC3,Q3_SC4,Q3_SC_ForcedChoicePerformance,Q3_SCT1,Q3_SCT2,Q3_SCT3,Q3_SCT4,Q3_SCT_ForcedChoicePerformance
+2,10,1,1,0,0,2,0,,1,1,0,2,0,0,50,50,51,50,51,50,4,0,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Incongruent,0
+2,11,0,0,0,0,0,0,,0,0,0,0,0,0,33,52,63,51,64,50,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+1,12,1,0,1,1,3,0,,0,0,0,0,0,0,50,17,33,50,50,50,2,4,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+4,13,1,0,1,1,3,0,,0,0,0,0,0,0,67,50,83,51,51,52,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Congruent,Incongruent,2
+2,14,0,0,0,0,0,0,,0,1,1,2,1,0,31,69,61,66,51,51,4,0,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Incongruent,0
+3,15,1,1,1,1,4,0,,0,0,0,0,0,0,50,53,53,50,52,52,1,3,Congruent,Congruent,Incongruent,Congruent,1,Incongruent,Congruent,Congruent,Congruent,3
+3,16,0,0,1,0,1,0,,1,0,0,1,1,1,41,40,43,26,27,27,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Congruent,Incongruent,2
+4,17,1,1,1,0,3,0,,0,0,1,1,0,0,46,38,68,74,64,50,2,1,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Congruent,Incongruent,Incongruent,1
+4,18,1,1,1,1,4,1,"in the first part each face and house corresponded with a type of natural background, for example, the waterfall corresponded with the male with square jaw and the other guy corresponded with the mountain",1,0,0,1,0,0,50,75,81,90,80,50,2,4,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+3,19,0,0,0,0,0,0,,0,1,0,1,0,0,51,78,76,38,67,54,0,2,Congruent,Congruent,Incongruent,Incongruent,0,Congruent,Incongruent,Congruent,Incongruent,2
+3,20,0,0,1,0,1,0,,0,0,0,0,0,0,33,50,65,50,50,50,0,1,Congruent,Congruent,Incongruent,Incongruent,0,Congruent,Congruent,Incongruent,Congruent,1
+1,21,1,1,1,1,4,1,Certain images were usually paired together,1,1,1,3,0,0,49,49,49,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+2,22,1,0,0,1,2,0,,1,0,0,1,0,0,48,53,51,46,46,53,3,0,Congruent,Incongruent,Congruent,Congruent,3,Congruent,Congruent,Incongruent,Incongruent,0
+4,23,0,0,0,0,0,0,,1,0,0,1,1,1,70,86,80,80,65,70,3,0,Congruent,Incongruent,Congruent,Congruent,3,Congruent,Congruent,Incongruent,Incongruent,0
+1,24,1,1,1,1,4,1,"One pic was mostly paired with another, although not always.",1,1,1,3,0,0,51,51,53,50,49,50,2,4,Incongruent,Congruent,Congruent,Incongruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+1,25,0,0,1,0,1,0,,0,0,0,0,0,0,44,54,47,45,60,49,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Incongruent,Congruent,2
+4,26,0,1,0,1,2,0,,0,0,0,0,0,0,50,50,50,50,50,50,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+3,27,1,1,1,1,4,1,Certain faces and houses resulted in similar nature pictures,1,0,0,1,0,0,30,30,30,50,50,50,2,0,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+2,28,0,1,1,1,3,0,,0,0,1,1,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+3,29,1,0,1,0,2,0,,0,0,0,0,0,0,99,100,100,0,1,2,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+2,30,1,1,0,0,2,0,,0,0,0,0,0,0,51,70,58,61,67,52,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+2,31,0,0,1,1,2,0,,0,0,1,1,0,0,51,53,53,45,55,49,2,0,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+3,32,1,1,0,0,2,0,,0,0,0,0,0,1,61,71,36,48,59,57,2,2,Incongruent,Congruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+4,33,1,0,0,1,2,0,,0,0,0,0,0,0,45,37,64,51,50,51,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Incongruent,Incongruent,Incongruent,2
+4,34,1,0,1,0,2,0,,0,0,0,0,0,0,74,80,79,76,77,77,4,1,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Congruent,1
+3,35,1,1,1,0,3,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+3,36,0,0,1,1,2,0,,0,0,0,0,0,0,52,52,51,50,50,49,2,3,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Congruent,3
+4,37,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,50,50,50,50,0,4,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Congruent,4
+2,38,1,1,0,0,2,0,,0,1,1,2,0,0,50,50,50,50,50,51,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+1,39,1,1,1,1,4,1,More often than not the faces were paired with a certain scene,0,0,0,0,0,0,50,51,51,51,51,51,2,0,Incongruent,Incongruent,Incongruent,Incongruent,2,Congruent,Congruent,Congruent,Congruent,0
+2,40,0,1,0,1,2,0,,0,0,0,0,0,0,32,50,33,50,41,40,3,2,Incongruent,Incongruent,Congruent,Incongruent,3,Congruent,Congruent,Congruent,Congruent,2
+3,41,1,1,1,1,4,1,some pictures seemed to be paired up more often than others,1,0,0,1,0,0,38,51,35,55,38,35,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+2,42,1,0,0,1,2,0,,1,0,1,2,1,1,88,81,95,70,77,91,2,1,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Incongruent,1
+1,43,1,1,1,1,4,0,,0,0,0,0,0,0,50,49,49,49,50,50,0,4,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Congruent,4
+1,44,0,0,1,0,1,0,,0,0,1,1,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+1,45,1,1,1,1,4,0,,1,1,0,2,0,0,50,50,50,50,49,50,0,4,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Congruent,4
+4,46,1,1,0,0,2,0,,0,0,1,1,1,0,61,39,67,60,52,37,3,2,Incongruent,Incongruent,Congruent,Incongruent,3,Congruent,Incongruent,Incongruent,Congruent,2
+4,47,1,1,1,1,4,1,the dark haired man usually followed the mountain and the lighter haired man usually followed the waterfall ,0,0,1,1,0,0,50,50,70,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+1,48,1,1,1,1,4,1,"faces related to certain scenes, house related to certain scenes. The same with colors.",1,0,0,1,1,1,51,51,52,51,52,52,1,2,Congruent,Congruent,Incongruent,Congruent,1,Incongruent,Incongruent,Incongruent,Incongruent,2
+4,49,1,1,0,0,2,0,,1,0,0,1,0,0,50,39,58,68,51,85,2,0,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Congruent,Incongruent,Congruent,0
+1,50,1,1,1,1,4,1,"The faces and buildings had a pair that was more often picked together, although not always.",1,0,0,1,0,0,50,50,51,49,49,50,0,0,Congruent,Congruent,Incongruent,Incongruent,0,Congruent,Congruent,Incongruent,Incongruent,0
+3,51,1,1,0,0,2,0,,0,0,0,0,0,0,47,66,52,33,48,49,2,2,Congruent,Congruent,Congruent,Congruent,2,Incongruent,Incongruent,Incongruent,Incongruent,2
+1,52,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,66,72,50,6,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+2,53,0,0,0,0,0,0,,1,1,0,2,0,0,30,54,35,37,71,24,1,2,Congruent,Congruent,Congruent,Incongruent,1,Congruent,Incongruent,Incongruent,Congruent,2
+4,54,0,1,1,0,2,0,,1,0,1,2,0,0,70,39,28,84,35,67,3,0,Congruent,Incongruent,Congruent,Congruent,3,Congruent,Congruent,Incongruent,Incongruent,0
+4,55,1,0,0,0,1,0,,1,1,0,2,0,1,50,50,65,51,55,52,3,3,Incongruent,Incongruent,Incongruent,Congruent,3,Incongruent,Incongruent,Congruent,Incongruent,3
+1,56,0,0,0,1,1,0,,0,0,0,0,0,0,20,51,70,51,33,7,1,3,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Congruent,Congruent,3
+2,57,1,0,0,0,1,0,,0,0,0,0,1,0,69,88,82,80,83,69,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+1,58,1,1,1,1,4,0,,0,0,0,0,0,0,47,10,34,50,25,24,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Congruent,Incongruent,2
+3,59,1,0,1,0,2,0,,0,0,0,0,0,0,50,50,50,50,50,50,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Incongruent,Congruent,2
+1,60,1,0,1,1,3,0,,0,0,0,0,0,0,50,50,82,51,34,53,0,1,Congruent,Congruent,Incongruent,Incongruent,0,Congruent,Congruent,Congruent,Incongruent,1
+2,61,0,0,1,0,1,0,,0,0,1,1,0,0,50,50,50,50,50,50,2,2,Incongruent,Congruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+1,62,1,0,1,0,2,0,,0,0,0,0,0,0,52,63,52,52,52,39,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+2,63,1,0,1,0,2,1,Red colors scene and face.,1,0,0,1,0,1,44,81,11,48,25,77,2,4,Incongruent,Congruent,Incongruent,Congruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+2,64,0,1,0,0,1,0,,0,1,0,1,0,0,40,50,60,67,43,50,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+4,65,1,1,1,1,4,1,Each face and house was typically paired with a specific nature scene.,1,1,1,3,0,0,71,50,47,50,44,56,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+2,66,0,0,1,0,1,0,,0,1,0,1,0,0,78,80,84,74,81,90,4,0,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Incongruent,0
+1,67,1,1,1,1,4,1,the people's faces tended to be with the mountain and canyon and the houses went with the water fall and forest.,0,0,0,0,0,0,50,50,50,50,50,50,4,0,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Incongruent,0
+2,68,1,1,0,0,2,0,,0,1,1,2,1,1,50,50,51,50,50,50,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+4,69,1,1,0,0,2,0,,0,0,0,0,0,0,50,50,50,50,50,51,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Incongruent,Congruent,Incongruent,Congruent,2
+3,70,1,1,1,1,4,1,certain faces would go before certain pictures,1,0,1,2,0,0,51,52,51,50,50,51,3,3,Incongruent,Congruent,Congruent,Congruent,3,Incongruent,Congruent,Congruent,Congruent,3
+4,71,1,1,1,1,4,1,the pictures and the houses matched up with the other pics most times,1,1,1,3,0,0,35,50,27,60,36,45,2,1,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Incongruent,1
+3,72,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+3,73,1,1,1,1,4,0,,0,0,0,0,0,0,87,85,51,61,57,51,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Incongruent,Congruent,2
+1,74,1,1,1,1,4,1,The scenes were more likely to come up following a specific image. Dark hair = mountain. Light hair= canyon. small house = waterfall. big house = forest.,1,0,0,1,0,0,58,50,42,67,34,34,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+4,75,0,1,0,0,1,1,i think  repeat image same answer .,0,0,1,1,0,0,63,83,66,82,81,85,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+4,76,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+3,77,1,1,1,1,4,0,,0,0,0,0,0,0,35,51,53,49,49,49,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Incongruent,Congruent,2
+1,78,1,1,0,1,3,0,,0,1,1,2,0,0,51,52,51,50,50,52,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+4,79,0,0,1,1,2,1,The waterfall seemed to occur more with the same following card.,0,1,0,1,0,0,83,50,35,49,68,32,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+2,80,1,0,0,1,2,1,The photos and scenes matched certain others about 75% of the time.,0,1,1,2,0,0,45,68,51,35,9,29,0,0,Congruent,Congruent,Incongruent,Incongruent,0,Congruent,Congruent,Incongruent,Incongruent,0
+2,81,1,1,1,1,4,0,,0,0,0,0,0,0,1,1,1,50,50,51,2,1,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Incongruent,1
+2,82,1,1,1,1,4,0,,0,0,0,0,1,1,56,23,9,35,25,30,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Incongruent,Congruent,2
+1,83,0,0,1,0,1,0,,0,1,1,2,0,0,23,61,44,56,16,0,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Congruent,Incongruent,2
+3,84,0,0,0,0,0,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+3,85,1,0,0,0,1,0,,0,0,1,1,0,0,2,8,8,0,0,0,1,2,Incongruent,Congruent,Incongruent,Incongruent,1,Incongruent,Incongruent,Incongruent,Incongruent,2
