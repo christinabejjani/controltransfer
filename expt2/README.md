@@ -1,0 +1,5 @@
+# Experiment 2:
+
+We interpret the results of Experiment 1 as a demonstration of an implicit stimulus-control transfer effect, where control state associations are passed on between previously established paired-associates. We thus contend that the differential congruency effects observed in the S-CT phase result from S1-S2 associations formed in the S-S phase. Alternatively, however, the S-CT phase effect could have arisen due to “learned predictiveness”, whereby participants learned that (scene) image cues predicted Stroop trial congruency in the S-C phase and subsequently assumed the same occurred for (face/house) images in the S-CT phase. 
+
+In Experiment 2, we provide a direct test of this rival account by scrambling the S1-S2 associations in the S-S phase, such that no paired-associates could be formed. Here, the control-transfer hypothesis would predict that no differential congruency effects should be observed for different S1 images in the S-CT phase, whereas the learned predictiveness account would anticipate such effects.
