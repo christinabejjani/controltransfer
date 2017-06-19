@@ -1,0 +1,74 @@
+version,subjID,Mem1,Mem2,Mem3,Mem4,ExplicitMem,Q1_SS_SystematicVariation,"If so, what?",Q2,Q3,Q4,ExplicitTaskAwareness,Q1_SC_SystematicVariation,Q1_SCT_SystematicVariation,Q2_SceneSkyPresence,Q2_SceneColorScheme,Q2_SceneTreeFrequency,Q2_ImageType,Q2_FeatureType,Q2_LightType,Q3_SC_ForcedChoicePerformance,Q3_SCT_ForcedChoicePerformance,Q3_SC1,Q3_SC2,Q3_SC3,Q3_SC4,Q3_SC_ForcedChoicePerformance,Q3_SCT1,Q3_SCT2,Q3_SCT3,Q3_SCT4,Q3_SCT_ForcedChoicePerformance
+2,10,0,0,0,1,1,0,,0,0,1,1,0,0,30,30,33,27,45,38,1,1,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Incongruent,Incongruent,1
+2,11,1,0,0,0,1,0,,0,1,1,2,0,0,49,49,52,46,33,20,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+2,12,1,1,1,0,3,0,,0,0,0,0,0,0,51,66,57,60,74,70,2,2,Incongruent,Incongruent,Incongruent,Incongruent,2,Congruent,Congruent,Congruent,Congruent,2
+3,13,0,0,0,1,1,0,,1,0,0,1,1,1,52,73,82,57,77,55,1,0,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Congruent,Incongruent,Incongruent,0
+1,14,0,0,1,1,2,0,,0,0,1,1,1,0,50,50,72,75,3,50,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+2,15,1,0,1,0,2,0,,1,0,0,1,0,0,82,73,56,68,80,80,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+1,16,1,0,1,0,2,0,,0,0,0,0,0,0,49,50,50,84,84,83,2,4,Congruent,Congruent,Congruent,Congruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+3,17,0,0,1,0,1,1,face to maximum repeat,0,1,0,1,1,1,61,69,71,64,70,72,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+1,18,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+4,19,1,0,1,1,3,0,,0,0,0,0,0,0,50,51,50,50,51,50,2,2,Incongruent,Incongruent,Incongruent,Incongruent,2,Incongruent,Incongruent,Incongruent,Incongruent,2
+2,20,1,1,0,0,2,0,,0,0,0,0,0,0,50,51,32,53,31,31,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+2,21,0,1,0,0,1,0,,0,0,0,0,0,0,33,33,33,32,19,49,2,3,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Congruent,3
+3,22,0,1,1,1,3,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+2,23,1,0,0,0,1,0,,1,0,0,1,0,0,33,21,15,36,21,49,2,2,Congruent,Congruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+1,24,0,0,1,0,1,0,,0,0,0,0,0,0,33,33,34,33,33,34,0,4,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Congruent,4
+1,25,0,0,0,0,0,1,Random with no order pics ,0,0,0,0,0,0,55,50,53,65,61,64,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+2,26,1,1,0,0,2,0,,0,1,0,1,0,0,30,30,35,40,25,34,2,2,Incongruent,Congruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+2,27,0,1,1,0,2,0,,0,0,0,0,0,0,60,51,39,59,61,44,2,1,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Congruent,Incongruent,Congruent,1
+3,28,1,1,0,0,2,0,,0,0,0,0,0,0,33,55,34,34,35,56,1,3,Congruent,Congruent,Incongruent,Congruent,1,Incongruent,Congruent,Congruent,Congruent,3
+1,29,1,1,1,0,3,0,,0,0,0,0,0,0,50,50,65,50,50,50,4,4,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Incongruent,Congruent,Congruent,4
+1,30,1,0,1,1,3,0,,0,1,0,1,0,0,33,34,37,50,50,52,2,4,Incongruent,Incongruent,Incongruent,Incongruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+1,31,1,1,0,0,2,0,,1,0,0,1,0,0,87,78,88,85,81,88,2,1,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Congruent,Congruent,Incongruent,1
+4,32,1,1,1,0,3,0,,0,1,0,1,0,0,50,50,50,51,50,51,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+3,33,0,0,0,0,0,0,,0,0,0,0,0,0,39,47,57,55,53,62,1,2,Congruent,Congruent,Incongruent,Congruent,1,Incongruent,Incongruent,Incongruent,Incongruent,2
+2,34,1,1,1,1,4,0,,0,0,0,0,0,0,17,18,18,51,51,52,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+2,35,1,1,0,0,2,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Congruent,Incongruent,Congruent,Congruent,2,Incongruent,Congruent,Incongruent,Congruent,2
+4,36,1,0,1,0,2,0,,0,1,0,1,0,0,1,50,26,50,50,51,0,2,Congruent,Incongruent,Incongruent,Incongruent,0,Congruent,Incongruent,Incongruent,Congruent,2
+1,37,0,1,0,1,2,0,,0,0,0,0,0,0,31,68,51,67,35,35,0,4,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Congruent,4
+1,38,0,0,1,1,2,0,,0,1,0,1,0,0,2,3,3,2,2,2,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+2,39,1,0,0,0,1,0,,0,1,1,2,0,0,53,55,40,62,57,54,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Congruent,Incongruent,2
+3,40,1,0,0,0,1,0,,0,1,0,1,0,1,33,50,20,65,75,55,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Congruent,Incongruent,2
+4,41,0,0,1,0,1,0,,0,1,0,1,0,0,30,39,44,29,44,36,2,0,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+4,42,1,1,1,1,4,0,,0,0,1,1,1,0,51,51,51,49,49,73,0,1,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Congruent,Incongruent,Incongruent,1
+1,43,0,0,0,0,0,0,,0,0,0,0,0,0,24,12,32,18,34,15,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Incongruent,Congruent,2
+4,44,0,1,0,0,1,0,,0,1,0,1,0,0,51,51,51,51,51,51,0,2,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Congruent,Incongruent,Congruent,2
+4,45,0,0,0,0,0,0,,0,0,0,0,0,0,33,50,24,51,34,51,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+4,46,1,0,1,0,2,0,,0,1,1,2,0,0,50,69,34,50,49,35,2,0,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+2,47,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,53,52,50,52,2,0,Congruent,Incongruent,Incongruent,Incongruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+1,48,1,1,0,0,2,0,,0,0,0,0,0,0,51,32,41,41,48,45,1,0,Congruent,Congruent,Incongruent,Congruent,1,Congruent,Congruent,Incongruent,Incongruent,0
+4,49,1,1,1,1,4,0,,0,1,1,2,0,0,50,50,50,50,50,50,2,4,Incongruent,Congruent,Incongruent,Congruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+3,50,1,1,0,0,2,0,,0,0,1,1,0,0,50,75,50,50,50,50,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+2,51,0,0,0,0,0,0,,0,0,0,0,0,0,67,83,58,83,51,49,2,2,Congruent,Congruent,Congruent,Congruent,2,Congruent,Congruent,Congruent,Congruent,2
+4,52,1,1,0,1,3,0,,0,0,0,0,0,0,32,35,35,49,51,51,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Incongruent,Incongruent,Congruent,2
+3,53,1,0,1,0,2,0,,0,0,0,0,0,0,50,50,50,50,50,50,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Congruent,Incongruent,2
+3,54,1,0,0,0,1,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,0,Incongruent,Incongruent,Incongruent,Incongruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+1,55,1,0,0,1,2,0,,0,0,0,0,0,0,45,60,14,45,24,10,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+4,56,1,1,0,0,2,0,,0,1,1,2,0,0,50,50,50,50,50,50,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+4,57,0,1,0,1,2,0,,0,1,0,1,0,0,25,45,80,68,40,15,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Congruent,Incongruent,2
+3,58,1,1,1,1,4,0,,0,0,0,0,0,0,33,58,52,51,30,41,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+2,59,1,1,1,1,4,0,,1,1,1,3,1,0,50,55,26,50,51,50,2,1,Congruent,Incongruent,Incongruent,Incongruent,2,Congruent,Incongruent,Incongruent,Incongruent,1
+4,60,1,0,1,1,3,0,,0,0,0,0,0,0,51,51,51,50,50,51,2,2,Congruent,Congruent,Congruent,Congruent,2,Congruent,Congruent,Congruent,Congruent,2
+1,61,1,0,1,0,2,0,,0,0,0,0,0,0,51,50,50,50,50,50,2,3,Congruent,Congruent,Congruent,Congruent,2,Incongruent,Congruent,Congruent,Congruent,3
+2,62,1,1,1,1,4,0,,1,0,1,2,0,0,37,53,54,42,54,48,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+4,63,1,1,1,1,4,1,Not sure...Show the montain before the canyon,1,1,1,3,0,0,0,50,50,50,50,50,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+3,64,0,0,1,0,1,0,,0,0,0,0,0,0,50,50,50,50,50,50,2,2,Incongruent,Congruent,Incongruent,Congruent,2,Congruent,Incongruent,Incongruent,Congruent,2
+3,65,0,0,0,0,0,0,,0,0,0,0,0,0,55,73,62,68,59,78,3,2,Incongruent,Incongruent,Congruent,Incongruent,3,Congruent,Incongruent,Congruent,Incongruent,2
+4,66,0,0,1,0,1,0,,0,0,1,1,0,0,49,75,40,37,73,74,0,3,Congruent,Congruent,Incongruent,Incongruent,0,Incongruent,Incongruent,Congruent,Incongruent,3
+3,67,1,1,1,0,3,0,,1,0,0,1,1,1,58,71,72,59,73,67,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Congruent,2
+3,68,1,1,1,1,4,1,some images are realated ,1,0,0,1,1,1,49,55,62,41,67,55,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Congruent,Congruent,Congruent,2
+1,69,0,0,0,0,0,0,,0,0,0,0,0,0,49,65,55,37,54,66,1,1,Incongruent,Congruent,Incongruent,Incongruent,1,Congruent,Congruent,Incongruent,Congruent,1
+4,70,1,1,0,1,3,0,,0,1,0,1,0,0,50,50,50,50,50,50,4,0,Incongruent,Incongruent,Congruent,Congruent,4,Congruent,Congruent,Incongruent,Incongruent,0
+1,71,1,1,1,1,4,0,,0,0,1,1,0,0,60,51,61,72,64,22,2,2,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Congruent,Congruent,Incongruent,2
+4,72,0,0,0,0,0,0,,0,0,0,0,0,0,53,52,53,54,54,54,2,4,Congruent,Incongruent,Congruent,Incongruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+3,73,1,1,1,0,3,0,,0,0,0,0,0,0,50,50,50,60,56,61,2,0,Incongruent,Congruent,Congruent,Incongruent,2,Congruent,Congruent,Incongruent,Incongruent,0
+2,74,1,1,0,0,2,0,,1,0,0,1,0,0,37,50,34,66,30,45,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Incongruent,Congruent,2
+3,75,1,0,0,0,1,0,,0,0,1,1,0,0,51,53,54,51,52,53,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Incongruent,Incongruent,Incongruent,Incongruent,2
+1,76,1,1,0,1,3,0,,0,1,1,2,0,0,0,51,0,17,1,50,2,4,Congruent,Incongruent,Incongruent,Congruent,2,Incongruent,Incongruent,Congruent,Congruent,4
+4,77,1,1,0,1,3,0,,0,0,1,1,0,0,35,53,36,50,51,19,2,2,Congruent,Incongruent,Incongruent,Congruent,2,Congruent,Incongruent,Congruent,Incongruent,2
+2,78,1,0,1,0,2,0,,0,1,0,1,0,0,81,52,47,68,62,72,1,1,Incongruent,Congruent,Incongruent,Incongruent,1,Congruent,Congruent,Incongruent,Congruent,1
+2,79,1,1,1,0,3,0,,0,0,0,0,0,0,16,17,18,31,31,28,1,2,Congruent,Incongruent,Incongruent,Incongruent,1,Congruent,Incongruent,Incongruent,Congruent,2
+3,80,1,1,0,0,2,0,,0,0,1,1,0,0,30,60,46,62,38,55,2,1,Incongruent,Congruent,Congruent,Incongruent,2,Congruent,Incongruent,Incongruent,Incongruent,1
+1,81,1,1,0,1,3,0,,0,0,0,0,0,0,50,50,50,52,36,52,4,2,Incongruent,Incongruent,Congruent,Congruent,4,Incongruent,Congruent,Congruent,Incongruent,2
+3,82,1,1,0,0,2,1,face and water falls,0,0,0,0,0,0,72,84,45,66,78,71,2,1,Congruent,Incongruent,Congruent,Incongruent,2,Congruent,Congruent,Congruent,Incongruent,1
