@@ -15,3 +15,4 @@ You can also see the JavaScript files in action:
 * S-CT Phase: https://people.duke.edu/~cb383/controltransfer/expt1/JS/v1/SCTPhaseFinal_v1.html
 * Main Menu file: https://people.duke.edu/~cb383/controltransfer/expt1/JS/v1/MenuFinal_v1.html
   1. Note: This file combines all the other JS files and is what we post to Amazon Mechanical Turk. 
+  1. **Note**: None of these files will work for the "last" button. That is what "updates" this main menu file, and on their own, this function does not work.
