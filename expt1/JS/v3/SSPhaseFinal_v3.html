@@ -503,6 +503,7 @@ $(document).ready(function(){
 					accuracy = 1; // correct
 					feedbackType = 1;
 					ACCCount++; //only add up the number of correct trials to give the right "total" acc fb later
+					data[logCounter++] = ["APResp:", 3, logCounter, trialCounter, MatrixCounter, runCounter, Valid, Invalid, Stimuli, StimuliPresented[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
 				}
 				else
 				{
@@ -516,6 +517,7 @@ $(document).ready(function(){
 				{
 					accuracy = 0;
 					feedbackType = 2;
+					data[logCounter++] = ["APResp:", 3, logCounter, trialCounter, MatrixCounter, runCounter, Valid, Invalid, Stimuli, StimuliPresented[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
 				}
 				else
 				{
@@ -523,7 +525,6 @@ $(document).ready(function(){
 					feedbackType = 3;
 				}
 			}	
-		data[logCounter++] = ["APResp:", 3, logCounter, trialCounter, MatrixCounter, runCounter, Valid, Invalid, Stimuli, StimuliPresented[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, Responset, ACCCount];
         }
         });
 		
