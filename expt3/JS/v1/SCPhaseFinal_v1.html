@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+
+<link rel="stylesheet" href="SCTfull.css" type="text/css" charset="utf-8">
+<script type="text/javascript" src="jquery-3.1.1.js"> </script>
+<script type="text/javascript" src="SCstimuli_edited.js"></script>
+<script type="text/javascript" src="shuffle.js"></script>
+<script type="text/javascript">
+
+function gup(name,tmpURL) // function specifically for mTurk: can separate worker ID from assignment ID from HIT ID
+{
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(tmpURL);
+	if (results == null)
+	{
+		return "";
+	}
+	
+	else
+	{
+		return results[1];
+	}
+}
+
+$(document).ready(function(){
+
+    //to be able to submit the data from the last trial, we need to get the assignment ID, etc. from the Main Menu file
+	document.getElementById('assignmentId').value = window.opener.document.getElementById('assignmentId').value;
+	document.getElementById('hitId').value = window.opener.document.getElementById('hitId').value;
+	document.getElementById('workerId').value = window.opener.document.getElementById('workerId').value;
+    document.getElementById('APs').value = window.opener.document.getElementById('APs').value;
+
+	var canvas = document.getElementById("myCanvas"); // myCanvas is to make sure that everything is presented in the middle of the screen
+	var ctx = canvas.getContext("2d"); // need context to draw on canvas
+
+	//disabling mouse clicks in the task
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+	var event1 = $(document).click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+	});
+	
+	//from: http://stackoverflow.com/questions/8595909/how-to-completley-disable-any-mouse-click
+    //disable right click
+    $(document).bind('contextmenu', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+    });
+	
+	//Stops backspace presses (8) and spaces (32);
+	//from: http://stackoverflow.com/questions/1495219/how-can-i-prevent-the-backspace-key-from-navigating-back
+  	$(function(){
+  	
+	var rx = /INPUT|SELECT|TEXTAREA/i;
+  	$(document).bind("keydown keypress", function(e){
+		if( e.which == 32 ||e.which == 8 )
+		{ // 8 == backspace
+			if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly )
+			{
+  				e.preventDefault();
+			}
+  		}
+  	});
+  	});	
+    
+    //////////////////////////////////////////////////////////////SC PRACTICE PHASE INSTRUCTIONS //////////////////////////////////////////////////////////////
+	
+	function PRhideAll()
+	{
+		$("#startPractice").hide();
+		$("#NextPRButton").hide();
+		$("#Instructions").hide();
+		$("#Instructions1").hide();		
+	    $("#Instructions2").hide();
+		$("#Instructions3").hide();
+		$("#Instructions4").hide();
+		$("#Instructions5").hide();
+		$("#Instructions6").hide();
+	}
+	
+	PRhideAll();
+	
+		$("#ReadInstructions").show();
+		$("#InstructionsHeader").show();
+		$("#PRStartInstruct").show();
+	
+	var PRslideNum=0;
+	var PRmaxNum=6;
+	
+	$("#NextPRButton").on('click', function(){
+	    PRslideNum=PRslideNum+1;
+		PRmoveShow(PRslideNum);
+	});
+	
+	$("#PRStartInstruct").on('click', function(){
+		$("#PRStartInstruct").hide()
+		$("#NextPRButton").show()
+	    PRmoveShow(PRslideNum);
+	});
+	
+	$("#startPractice").on('click', function(){
+    	PRhideAll();
+		$("#ReadInstructions").hide();
+		$("#InstructionsHeader").hide();
+		$("#startPracticeTask").show(); //start button appears when the task is called
+		$("#info").show(); // brief instructions
+	});
+	
+	function PRmoveShow(PRslideNum)
+	{
+		if (PRslideNum==0) {
+		   $("#Instructions").text('In this experiment, you will be presented with a series of color-words.');
+		   $("#Instructions").show() 		
+		} 
+		else if (PRslideNum==1) 
+		{
+			$("#Instructions1").text('On each trial, please respond to the color the word is printed in, while ignoring the meaning of the word.');
+			$("#Instructions1").show(); 
+		} 
+		else if (PRslideNum==2) 
+		{
+			$("#Instructions2").text('Press z if the word is BLUE, x if the word is GREEN, n if the word is RED, and m if the word is YELLOW.');
+			$("#Instructions2").show();
+		} 
+		else if (PRslideNum==3) 
+		{
+			$("#Instructions3").text('Please enlarge this window to encompass the entire computer screen and sit at a comfortable distance from the screen.');   
+			$("#Instructions3").show();
+		} 
+		else if (PRslideNum==4) 
+		{
+			$("#Instructions4").text('Respond to each color-word as quickly as possible while still being accurate. You will have until the color-word disappears to make your response. Always press the z key with your LEFT middle finger, the x key with your LEFT index finger, the n key with your RIGHT index finger, and the m key with your RIGHT middle finger.');
+			$("#Instructions4").show();	   
+		} 
+		else if (PRslideNum==5) 
+		{
+		   $("#Instructions5").text('Please stay focused during the experiment. You must get a total accuracy above 80% to proceed onto the main task.');
+		   $("#Instructions5").show();
+		}
+		else if (PRslideNum==6) 
+		{
+			$("#Instructions6").text('To get familiar with the task, you will first go through a practice round. Press the button to begin.');
+			$("#Instructions6").show();
+		}
+
+		if (PRslideNum==0) 
+		{
+		   $("#NextPRButton").show(); 
+		} 
+		else if (PRslideNum < PRmaxNum) 
+		{
+		   $("#NextPRButton").show(); 
+		} 
+		else 
+		{
+		   $("#NextPRButton").hide();
+		   $("#startPractice").show();   
+		} 
+	
+	}
+	
+	//////////////////////////////////////////////////////////////SC PRACTICE PHASE FINAL //////////////////////////////////////////////////////////////
+
+	var PRrunNumber = 1; // this is just a practice block, so 1 run
+	var PRrunCounter = -1; // i start at -1 because I add to the counter as soon as it is initialized. this ensures only 1 since it becomes 0 < runNumber
+	var PRtrialCounter = -1; // same reason
+	var PRtrialNumber = 29; // there are 30 total trials in this practice phase (JS counts from 0)
+	var PRkeyPressed = 0; // will call this again later to check what key was pressed & what should've been pressed
+	var PRProcedurePresented = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2]; // 1 = congruent; 2 = incongruent
+	var PRaccuracy = 0;
+	var PRrespTime = [];
+	var PRaccsum = []; // accuracy feedback that they'll get at the end of the block
+	var PRPressCorrect = []; // good to compare against key pressed & accuracy measures
+	var PRfeedbackType = 3; // this determines whether they get Correct, Incorrect, or Respond quicker
+    var PRACCCount = 0; //this will be a counter for all the accurate trials
+	var PRCounter = -1; // number of times someone has done the practice round
+	var Numbers = [1, 2, 3, 4, 2, 1, 3, 4, 1, 3, 9, 5, 12, 14, 6, 8, 7, 15, 11, 10, 2, 16, 3, 15, 2, 9, 1, 7, 4, 13]; // determines "type" within cong factor; I fixed the sequence so that there would be no direct repeats
+	var colors = ["BLUE", "RED", "GREEN", "YELLOW"];
+	var words = ["BLUE", "RED", "GREEN", "YELLOW"];
+	
+	var data=[['']]; //data logfile
+	var PRrunStart; //when a run starts - initiation of the javascript
+	var PRlogCounter = 0; //the counter for each data entry
+	var PRResponset; //  button press time - run start
+	var PRd2; // onset for the run
+	var PRd3; //onset for the number presentation
+	var PRd4; // onset for the button press
+	var PRStimTime; // stim time - run start
+	window.hasResponsePR = -1; // this is to ensure that data is not currently logged
+	
+	function hidePractice()
+	{
+		$("#PRRTs").hide();
+		$("#indicator").hide();		
+		$("#endPractice").hide();
+		$("#PRresize").hide();
+		$("#redo").hide();
+		$("#PRinstructions").hide();
+		$("#startPracticeTask").hide();
+	}
+
+	hidePractice();
+	
+	var PRd1 = new Date ();
+	var PRExpOpen;
+	PRExpOpen = PRd1.getTime();
+	
+	$("#startPracticeTask").click(function(){
+		$("#startPracticeTask").hide();
+		$("#info").hide();
+		runPR(); // will run my experiment function
+	});
+	
+	$("#endPractice").click(function(){ // when the experiment is finished, this will update the main menu file (which has all the HTML files gathered) & close the window				
+		$("#endPractice").hide();
+		$("#PRRTs", opener.window.document).val(data.join(";"));
+		$("#PRRTs").val(data.join(";"));
+		$("#indicator").hide();
+		$("#ReadInstructions").show();
+		$("#InstructionsHeader").show();
+		$("#SCStartInstruct").show();
+	});
+	
+	$("#PRresize").click(function(){ // to make sure that people are paying attention and don't have more than one task going, this fxn won't let a run start without a large enough window size
+		$("#PRresize").hide(); // once they click the button, the task will start only if the proper screen portions are in place
+		$("#indicator").hide();
+		$("#endBlockButton").hide();
+		PRcheckSize();
+	});
+
+	$("#redo").click(function(){ // if their accuracy is below 90% this will take them through the experiment again
+		$("#redo").hide();
+		$("#indicator").hide();
+		PRrunCounter = -1; // have to reset the run counter before starting exp again
+        PRCounter++; //this wouldn't work if someone actually exited to the instruction screen and then redid the practice
+		runPR();
+	});
+	
+	$("#PRinstructions").click(function(){ // if their accuracy is below 90%, they're presented with an option to go back to the instructions again
+		$("#PRinstructions").hide();
+		$("#indicator").hide();
+		$("#redo").hide();
+		$("#ReadInstructions").show();
+		$("#InstructionsHeader").show();
+		$("#PRStartInstruct").show()
+		PRslideNum = 0;
+	});
+	
+	function runPR()
+	{
+		PRlogCounter = 0;
+		PRrunCounter = -1;
+		PRCounter++;
+		runPRBlock();
+	}
+	
+	// adapted from: http://stackoverflow.com/questions/3437786/get-the-size-of-the-screen-current-web-page-and-browser-window
+	function PRcheckSize() 
+	{
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+		if (w < 800 || h < 600) // 800 by 600 is the lowest resolution on my laptop; seems like a good "minimum" (basically need 500 x 500 at least)
+        {
+			$("#indicator").text('Your browser window is too small to display the images properly. Please increase the window size or your screen resolution.');
+  			$("#indicator").show();
+			$("#PRresize").show();
+		} 
+		else // if their screen is the proper size...
+		{
+			$("#PRresize").hide();
+			PRcountDown(3); // start the countdown for the experiment
+		}	
+	}
+    	
+	function drawStroopPR()
+	{
+		ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.textBaseline="middle";
+		ctx.textAlign="center";
+		ctx.font="100px Arial"; 
+		PRd3 = new Date();
+		PRStimTime = PRd3.getTime() - PRrunStart;
+		
+		if (Numbers[PRtrialCounter] == 1) // blue in blue
+        {
+			ctx.fillStyle="blue";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'z';
+			PRResponseMatrix = 1;
+		}
+		else if (Numbers[PRtrialCounter] == 2) //red in red
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'n';
+			PRResponseMatrix = 3;
+		}
+		else if (Numbers[PRtrialCounter] == 3) //green in green
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'x';
+			PRResponseMatrix = 2;
+		}
+		else if (Numbers[PRtrialCounter] == 4) //yellow in yellow
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'm';
+			PRResponseMatrix = 4;
+		}
+		 if (Numbers[PRtrialCounter] == 5) // 5 means BLUE in RED
+        {
+			ctx.fillStyle="red";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'n';
+			PRResponseMatrix = 3;
+		}
+		else if (Numbers[PRtrialCounter] == 6) //6 BLUE in YELLOW
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'm';
+			PRResponseMatrix = 4;
+		}
+		else if (Numbers[PRtrialCounter] == 7) //7 BLUE in GREEN;
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[0], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'x';
+			PRResponseMatrix = 2;
+		}
+		else if (Numbers[PRtrialCounter] == 8) //8 RED in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'z';
+			PRResponseMatrix = 1;
+		}
+		else if (Numbers[PRtrialCounter] == 9) //9 RED in YELLOW;
+        {
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'm';
+			PRResponseMatrix = 4;
+		}
+		else if (Numbers[PRtrialCounter] == 10) //10 RED in GREEN;
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[1], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'x';
+			PRResponseMatrix = 2;
+		}
+		else if (Numbers[PRtrialCounter] == 11) //11 YELLOW in RED;
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'n';
+			PRResponseMatrix = 3;
+		}
+		else if (Numbers[PRtrialCounter] == 12) //12 YELLOW in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'z';
+			PRResponseMatrix = 1;
+		}
+		else if (Numbers[PRtrialCounter] == 13) //13 YELLOW in GREEN;
+        {
+			ctx.fillStyle="green";
+			ctx.fillText(words[3], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'x';
+			PRResponseMatrix = 2;
+		}
+		else if (Numbers[PRtrialCounter] == 14) //14 GREEN in RED;
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'n';
+			PRResponseMatrix = 3;
+		}
+		else if (Numbers[PRtrialCounter] == 15) //15 GREEN in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'z';
+			PRResponseMatrix = 1;
+		}
+		else if (Numbers[PRtrialCounter] == 16) //16 GREEN in YELLOW
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[2], canvas.width / 2, canvas.height / 2);
+			PRPressCorrect = 'm';
+			PRResponseMatrix = 4;
+		}
+		
+		window.hasResponsePR = 0; // only after stim presentation will responses be recorded
+		setTimeout(showFeedbackPR, 1000); // after 1 sec, this function will transition to the show Feedback fxn
+	}
+	
+	function runPRBlock() // main task is separated into 2 blocks
+	{
+		PRrunCounter++;
+		
+		if (PRrunCounter < PRrunNumber)
+		{
+			$("#redo").hide(); // hiding various HTML objects
+			$("#PRinstructions").hide();
+            $("#indicator").hide();
+			PRtrialCounter = -1; // resets the trial counter in case there are multiple blocks (main task)
+            window.hasResponsePR = -1; // make sure no buttons have been recorded when the task hasn't even started
+			PRACCCount = 0; // accuracy starts at 0
+            ctx.clearRect(0,0,canvas.width, canvas.height); // this is essentially like clearing the screen in matlab
+			PRcheckSize();
+		}
+	}
+	
+	function showFeedbackPR() // only in the practice task will they get feedback every time
+	{
+		window.hasResponsePR = -1;
+		ctx.clearRect(0,0, canvas.width, canvas.height);
+		ctx.textBaseline="middle";
+		ctx.textAlign="center";
+		ctx.fillStyle="black";
+		ctx.font="75px Arial"; // had to decrease fb size so it fits in my 500x500 canvas (+ respond quicker needs more space)
+		
+		if (PRfeedbackType == 1) // these fb types are coded below, where the keypress is
+		{
+			ctx.fillText("Correct", (canvas.width / 2), (canvas.height / 2), 500);
+		}
+		else // so if their fb type says they're not correct...
+        {        
+            if (PRfeedbackType == 2) // fb type 2 was still under "if window.hasResponse = 0" aka if they responded; so it established incorrect response
+			{
+				ctx.fillText("Incorrect", (canvas.width / 2), (canvas.height / 2), 500);
+			}
+            else // and if they're not incorrect, they haven't responded
+			{
+				ctx.fillText("Respond quicker",(canvas.width / 2), (canvas.height / 2), 500);
+                data[PRlogCounter++] = ["SCPracticeITI:", 1, PRCounter, PRlogCounter, PRtrialCounter, PRrunCounter, Numbers[PRtrialCounter], PRResponseMatrix, PRkeyPressed, PRPressCorrect, 3, 0, PRrespTime, PRACCCount];
+			}
+        }
+		
+		setTimeout(PRshowITI, 1000);	// after 1 sec of fb, go to the ITI
+	}
+	
+	function PRshowITI()
+	{
+		ctx.clearRect(0,0,canvas.width, canvas.height); // no matter what, clear the screen
+		window.hasResponsePR = -1;
+	
+		if (PRtrialCounter < PRtrialNumber)
+		{
+			$("#indicator").hide;
+			PRtrialCounter++; // build up the trial counter since it starts with the ITI
+			PRfeedbackType = 3;
+			PRaccuracy = 0;
+			PRkeyPressed = 0;
+			setTimeout(drawStroopPR,2000); // ITI of 2 seconds; then goes to the stimulus presentation
+		}
+		else // then you're done with the block!
+		{
+			$("#indicator").hide;
+			var PRaccsum = Math.round((PRACCCount/(PRtrialNumber+1)) * 100); // calculates accuracy percentage (#correct trials/total)*100
+			if (PRaccsum < 80) // required 90% to motivate subjects; bad subs will get discouraged and exit practice screen
+			{
+				$("#redo").show(); // option to redo practice round
+				$("#PRinstructions").show(); // option to return to instructions
+				$("#indicator").text("Your accuracy was " + PRaccsum + " percent. You must reach 90 percent to continue.");
+				$("#indicator").show();
+			}
+			else // they performed sufficiently well and are presented with end exp button
+			{
+				$("#indicator").text("Your accuracy was " + PRaccsum + " percent.");
+				$("#indicator").show();
+				$("#endPractice").show();
+			}
+		}
+	}
+	
+	function PRcountDown(time) // the countdown is meant to "prepare" the subjects that the experiment is beginning
+	{
+		if (time > 0)
+		{
+			ctx.textBaseline="middle";
+			ctx.textAlign="center";
+			ctx.fillStyle="black";
+			ctx.font="200px Arial";
+			ctx.clearRect(0,0, canvas.width, canvas.height);
+			ctx.fillText("" + time, canvas.width / 2, canvas.height / 2);
+			setTimeout(function(){PRcountDown(time - 1)},1000);
+		}
+		else
+		{
+			PRd2 = new Date();
+			PRrunStart = PRd2.getTime() - PRExpOpen;
+			PRshowITI(); // once the countdown is finished, it goes to the ITI; this way, subs are less likely to mess up the first trial, i.e. if the number was suddenly presented right after a 3-2-1 counter
+		}
+	}
+
+	
+	//////////////////////////////////////////////////////////////SC PHASE INSTRUCTIONS //////////////////////////////////////////////////////////////
+	
+	var slideNum=0;
+	var maxNum=6;
+	
+    function hideSCInstruct()
+	{
+		$("#startSCtask").hide();
+		$("#SCStartInstruct").hide();
+		$("#NextButton").hide();
+		$("#Instructions").hide();
+		$("#Instructions1").hide();		
+	    $("#Instructions2").hide();
+		$("#Instructions3").hide();
+		$("#Instructions4").hide();
+		$("#Instructions5").hide();
+		$("#Instructions6").hide();
+	}
+	
+	hideSCInstruct();
+
+	//when someone clicks the return button, it will update the main menu (i.e., the script whese these instructions are listed), close this javascript, and then presumably that script will continue
+    $("#startSCtask").on('click', function(){
+    	hideSCInstruct();
+		$("#ReadInstructions").hide();
+		$("#InstructionsHeader").hide();
+		$("#startButton").show();
+		$("#info").show();
+	});
+
+	//when someone clicks on the next button, it will hide the "return" button (i.e., they are not at the end yet) and add to slideNum (letting you know what slide number of instructions they're on)
+	$("#NextButton").on('click', function(){
+	    slideNum=slideNum+1;
+		moveShow(slideNum);
+	});
+
+	//when someone clicks on the start button, the only two buttons featured are the previous button and the next button
+	$("#SCStartInstruct").on('click', function(){
+		$("#SCStartInstruct").hide()
+		$("#NextButton").show()
+	    moveShow(slideNum);
+	});
+
+	function moveShow(slideNum)
+	{
+		if (slideNum==0) {
+		   $("#Instructions").text('This part is similar to the practice phase you completed; however, you will no longer receive feedback, and you will be presented with images of scenes and color-words. Each image will precede the presentation of color-words and may contain information about the difficulty of the upcoming trial.');
+		   $("#Instructions").show()
+		} 
+		else if (slideNum==1) 
+		{
+			$("#Instructions1").text('On each trial, you only need to respond to the word stimuli. Please respond to the color the word is printed in, while ignoring the meaning of the word.');
+			$("#Instructions1").show(); 
+		} 
+		else if (slideNum==2) 
+		{
+			$("#Instructions2").text('Press z if the word is BLUE, x if the word is GREEN, n if the word is RED, and m if the word is YELLOW. Note that when a color-word is black, you will not be able to respond.');
+			$("#Instructions2").show();
+		} 
+		else if (slideNum==3) 
+		{
+		   $("#Instructions3").text('Please enlarge this window to encompass the entire computer screen and sit at a comfortable distance from the screen.');   
+			$("#Instructions3").show();
+		   } 
+		else if (slideNum==4) 
+		{
+		   $("#Instructions4").text('Respond to each color-word as quickly as possible while still being accurate. You will have until the color-word disappears to make your response. Always press the z key with your LEFT middle finger, the x key with your LEFT index finger, the n key with your RIGHT index finger, and the m key with your RIGHT middle finger.');
+			$("#Instructions4").show();	   
+		} 
+		else if (slideNum==5) 
+		{
+		   $("#Instructions5").text('Please stay focused during the experiment and try to get an accuracy above 80%.');
+		   $("#Instructions5").show();
+		}
+		else if (slideNum==6) 
+		{
+		   $("#Instructions6").text('This task has 4 blocks, which will take 6.75 minutes each. Press the button to begin the task.');
+			$("#Instructions6").show();
+		}
+	
+		if (slideNum==0) 
+		{
+		   $("#NextButton").show(); 
+		} 
+		else if (slideNum < maxNum) 
+		{
+		   $("#NextButton").show(); 
+		} 
+		else 
+		{
+		   $("#NextButton").hide();
+		   $("#startSCtask").show();  
+		} 
+	
+	}
+	
+	//////////////////////////////////////////////////////////////SC PHASE FINAL //////////////////////////////////////////////////////////////
+	
+	function hideSC()
+	{
+		$("#SCs").hide();
+		$("#indicator").hide();		
+		$("#submitButton").hide();
+		$("#endBlockButton").hide();
+        $("#endExpButton").hide();
+		$("#resize").hide();
+		$("#mturk_form").hide();
+		$("#startButton").hide();
+		$("#info").hide();
+	}
+	
+	hideSC();
+    
+	var runNumber = 4; // there are 4 blocks in this task
+	var runCounter = -1; // i start at -1 because I add to the counter as soon as it is initialized.
+	var trialCounter = -1; // same reason
+	var trialNumber = 63; // 64 trials per block
+	var keyPressed = 0; // this is an easy way of seeing when someone actually pressed a button vs. not
+	var accuracy = 0; // default
+	var respTime = []; // default
+	var accsum = []; // accuracy feedback that they'll get at the end of the block
+	var PressCorrect = []; // this is how i mark correct answers
+    var ACCCount = 0; //this will be a counter for all the accurate trials
+	var fileNames = ["S2_1.jpg", "S2_2.jpg", "S2_3.jpg", "S2_4.jpg"]; // in order, these are my S2 images
+	var imgCount = 0; //img counter for when I'm loading the images
+	var imgs = new Array(4); //I chose to only load into an array of 4 and define when to draw each of those based off other matrices (rather than try to make an array of many images)
+	var MatrixCounter = -1; // I used this as another counter throughout the experiment (since trials are by block & trialCounter is reset)
+    var feedbackType = 0; // will tell you whether or not they've responded within the time frame
+	var Incongruent = 0; // will make analyses easier later to have congruency of each trial marked 
+    var Congruent = 0;
+	var ResponseMatrix = 0; // this to see how uneven the response buttons will be (i.e., if they have to press one more often than the other)
+	var IncongruentCounter = -1; // there are individual matrices for each congruent/incongruent type, so I use separate counters
+	var CongruentCounter = -1;
+    var TrialType = 0;
+    
+	var data=[['']]; //data logfile - resets here so it's empty & not full of the practice logs
+	var runStart; //when a run starts
+	var logCounter = 0; //the counter for each data entry
+	var Responset; // response onset
+	var ColorTime; //this is when the color for the Stroop word was presented
+	var d2; // marker for when image is presented
+	var d1; // marker for runstart
+	var d3; // marker for when stim is presented
+	var d4; // marker for when a key is presed re: #
+	var d6; // marker for when the color for the Stroop word was presented
+	var d5 = new Date();
+	var ScreenPulled; // when the DOM loads
+	ScreenPulled = d5.getTime();
+	var ImagePresent; // time when S2 image was presented
+	var StimTime; // this is the time the stimulus was presented; so RT is responset - stimttime;
+	window.hasResponse = -1; // this is to ensure that data is not currently logged
+	
+    //establish what each button will do
+	
+	$("#startButton").click(function(){
+		$("#startButton").hide();
+		$("#info").hide();
+		runExp(); // will run my experiment function
+	});
+	
+	$("#endBlockButton").click(function(){ // when a block is finished, this button would run another block
+		$("#endBlockButton").hide();
+		$("#indicator").hide();
+		runBlock();
+	});
+	
+	$("#resize").click(function(){ // to make sure that people are paying attention and don't have more than one task going, this fxn won't let a run start without a large enough window size
+		$("#resize").hide(); // once they click the button, the task will start only if the proper screen portions are in place
+		$("#indicator").hide();
+		$("#endBlockButton").hide();
+		checkSize();
+	});
+    
+	$("#endExpButton").click(function(){
+        opener.updateMainMenu(2);
+		JavaScript:window.close();
+	});
+
+	loadImage(); // loading the S2 images
+    
+    //simple "runExp" to separate out the WHOLE experiment from individual blocks
+	function runExp()
+	{
+		logCounter = 0;
+		Prep(); // determining trial type and stim presented
+        Prep2();
+        runBlock();
+	}
+	
+    function loadImage() // this is my load image function; have to load before I start drawing b/c can take time
+	{
+		if (imgCount < 4)
+		{
+			imgs[imgCount] = new Image();
+			imgs[imgCount].src = fileNames[imgCount];
+			imgs[imgCount].onload = loadImage;
+			imgCount++;
+		}
+	}
+    
+	function runBlock() // main task is separated into 2 blocks
+	{
+		runCounter++;
+		if (runCounter < runNumber)
+		{
+			$("#redo").hide(); // hiding various HTML objects
+			$("#instructions").hide();
+            $("#indicator").hide();
+			trialCounter = -1; // resets the trial counter in case there are multiple blocks
+            window.hasResponse = -1; // make sure no buttons have been recorded when the task hasn't even started
+			ctx.clearRect(0,0,canvas.width, canvas.height); // this is essentially like clearing the screen in matlab
+			if (runCounter > 0)
+            {
+                ACCCount = 0; // reset acc count before next block
+            }
+            checkSize();
+		}
+		else
+		{
+            $("#indicator").hide();
+            $("#SCs").val(data.join(";"));
+            $("#SCs", opener.window.document).val(data.join(";")); //this makes sure that the data is linked to APs which is an element that gets written to our data file in the main menu file
+			$("#endExpButton").show(); // finished with all the blocks in a task, expt is ended
+		}
+	}
+    
+	// adapted from: http://stackoverflow.com/questions/3437786/get-the-size-of-the-screen-current-web-page-and-browser-window
+	function checkSize() 
+	{
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+		if (w < 800 || h < 600) // 800 by 600 is the lowest resolution on my laptop; seems like a good "minimum" (basically need 500 x 500 at least)
+        {
+			$("#indicator").text('Your browser window is too small to display the images properly. Please increase the window size or your screen resolution.');
+  			$("#indicator").show();
+			$("#resize").show();
+		} 
+		else // if their screen is the proper size...
+		{
+			$("#resize").hide();
+			countDown(3); // start the countdown for the experiment
+		}	
+	}
+    
+    function countDown(time) // the countdown is meant to "prepare" the subjects that the experiment is beginning
+	{
+		if (time > 0)
+		{
+			$("#startButton").hide();
+			d1 = new Date();
+			runStart = d1.getTime() - ScreenPulled;
+			ctx.textBaseline="middle";
+			ctx.textAlign="center";
+			ctx.fillStyle="black";
+			ctx.font="200px Arial";
+			ctx.clearRect(0,0, canvas.width, canvas.height);
+			ctx.fillText("" + time, canvas.width / 2, canvas.height / 2);
+			setTimeout(function(){countDown(time - 1)},1000);
+		}
+		else
+		{
+			showITI(); // once the countdown is finished, it goes to the ITI; this way, subs are less likely to mess up the first trial, i.e. if the number was suddenly presented right after a 3-2-1 counter
+		}
+	}
+    
+    function showITI()
+	{
+        ctx.clearRect(0,0,canvas.width, canvas.height); // no matter what, clear the screen
+        window.hasResponse = -1;
+        
+        if (trialCounter < trialNumber)
+        {
+            $("#indicator").hide();
+            keyPressed = 0;
+            setTimeout(drawS2,2000); // ITI of 2 seconds; then goes to the stimulus presentation
+        }
+        else // then you're done with the block!
+        {   
+            $("#indicator").hide();
+            var accsum = Math.round((ACCCount/(trialNumber+1)) * 100); // calculates accuracy percentage (#correct trials/total)*100 for each block
+            $("#indicator").text("Your accuracy on this block was " + accsum + " percent.");
+            $("#indicator").show();
+            $("#endBlockButton").show();
+        }
+	}
+    
+    function drawS2() // this is my draw S2 function
+	{
+		window.hasResponse = -1;
+		trialCounter++; // I moved the trial counter here so that it would record the ITI button presses correctly
+		MatrixCounter++;
+		d2 = new Date;
+		ImagePresent = d2.getTime() - runStart;
+		if (StimuliPresented[MatrixCounter] == 1)
+		{
+			ctx.drawImage(imgs[0], ((canvas.width/2) - 200), ((canvas.height/2) - 233), 400, 266); // - offset by 100 px from center
+		}
+		else if (StimuliPresented[MatrixCounter] == 2)
+		{
+			ctx.drawImage(imgs[1], ((canvas.width/2) - 200), ((canvas.height/2) - 233), 400, 266);
+		}
+		else if (StimuliPresented[MatrixCounter] == 3)
+		{
+			ctx.drawImage(imgs[2], ((canvas.width/2) - 200), ((canvas.height/2) - 233), 400, 266);
+		}
+		else if (StimuliPresented[MatrixCounter] == 4)
+		{
+			ctx.drawImage(imgs[3], ((canvas.width/2) - 200), ((canvas.height/2) - 233), 400, 266);
+		}
+		setTimeout(drawCross, 1000);
+	}
+    
+    function drawCross() // this is my fixation function
+	{
+		window.hasResponse = -1;
+		ctx.font="100px Arial"; 
+		ctx.fillStyle="black";
+		ctx.fillText("+", (canvas.width/2), (canvas.height/2) + 100); // fixation off-set from center by 100 pixels
+		setTimeout(drawStroopWord,1000); //1000 ms ISI
+	}
+	
+	function drawStroopWord()
+	{
+		ctx.clearRect((canvas.width/2) - 50, (canvas.height/2) + 50, 100,100); // clears the area where the fixation had been
+		ctx.fillStyle="black";
+		ctx.font="100px Arial";
+		d3 = new Date();
+		StimTime = d3.getTime() - runStart;
+	
+		if (StroopNum[MatrixCounter] == 1) // blue in blue
+		{
+			ctx.fillText(words[0], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 2) //red in red
+		{
+			ctx.fillText(words[1], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 3) //green in green
+		{
+			ctx.fillText(words[2], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 4) //yellow in yellow
+		{
+			ctx.fillText(words[3], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 6) //6 BLUE in YELLOW
+		{
+			ctx.fillText(words[0], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 10) //10 RED in GREEN;
+		{
+			ctx.fillText(words[1], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 12) //12 YELLOW in BLUE;
+		{
+			ctx.fillText(words[3], (canvas.width/2), (canvas.height/2) + 100);
+		}
+		else if (StroopNum[MatrixCounter] == 14) //14 GREEN in RED;
+		{
+			ctx.fillText(words[2], (canvas.width/2), (canvas.height/2) + 100);
+		}    
+	
+		window.hasResponse = -1; // only after stim presentation will responses be recorded
+		setTimeout(drawStroop, 200); // after 1 sec, this function will transition to the show Feedback fxn
+		
+	}
+	
+	function drawStroop()
+	{ 
+		ctx.font="100px Arial";
+		d6 = new Date();
+		ColorTime = d6.getTime() - runStart;
+	
+		if (StroopNum[MatrixCounter] == 1) // blue in blue
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[0], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+			Congruent = 1;
+			Incongruent = 0;
+			TrialType = 2;
+		}
+		else if (StroopNum[MatrixCounter] == 2) //red in red
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[1], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+			Congruent = 1;
+			Incongruent = 0;
+			TrialType = 2;
+		}
+		else if (StroopNum[MatrixCounter] == 3) //green in green
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[2], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+			Congruent = 1;
+			Incongruent = 0;
+			TrialType = 2;
+		}
+		else if (StroopNum[MatrixCounter] == 4) //yellow in yellow
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[3], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+			Congruent = 1;
+			Incongruent = 0;
+			TrialType = 2;
+		}
+		else if (StroopNum[MatrixCounter] == 6) //6 BLUE in YELLOW
+		{
+			ctx.fillStyle="yellow";
+			ctx.fillText(words[0], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'm';
+			ResponseMatrix = 4;
+			Congruent = 0;
+			Incongruent = 1;
+			TrialType = 1;
+		}
+		else if (StroopNum[MatrixCounter] == 10) //10 RED in GREEN;
+		{
+			ctx.fillStyle="green";
+			ctx.fillText(words[1], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'x';
+			ResponseMatrix = 2;
+			Congruent = 0;
+			Incongruent = 1;
+			TrialType = 1;
+		}
+		else if (StroopNum[MatrixCounter] == 12) //12 YELLOW in BLUE;
+		{
+			ctx.fillStyle="blue";
+			ctx.fillText(words[3], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'z';
+			ResponseMatrix = 1;
+			Congruent = 0;
+			Incongruent = 1;
+			TrialType = 1;
+		}
+		else if (StroopNum[MatrixCounter] == 14) //14 GREEN in RED;
+		{
+			ctx.fillStyle="red";
+			ctx.fillText(words[2], (canvas.width/2), (canvas.height/2) + 100);
+			PressCorrect = 'n';
+			ResponseMatrix = 3;
+			Congruent = 0;
+			Incongruent = 1;
+			TrialType = 1;
+		}  
+		
+		window.hasResponse = 0; // only after stim presentation will responses be recorded
+		setTimeout(checkResponse, 800); // after 1 sec, this function will transition to the show Feedback fxn
+	}
+    
+	function checkResponse()
+	{
+		if (window.hasResponse == 0) //check if a response has been made
+		{
+			// if it hasn't been made, it will get logged as ITIResp
+			data[logCounter++] = ["SCRespITI:", 1, logCounter, trialCounter, MatrixCounter, runCounter, Congruent, Incongruent, StimuliPresented[MatrixCounter], StimProbTotal[MatrixCounter], TrialType, StroopNum[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, ColorTime, Responset, ACCCount];
+			if (feedbackType = 1) // if RT > 1000, show the negative respond quicker FB
+			{
+				setTimeout(showFeedback)
+			}
+			else // otherwise go to the showITI fxn (i don't think this is actually necessary to include)
+			{
+				setTimeout(showITI)
+			}
+			window.hasResponse = -1; // set the response to not check for responses again
+		}
+		else // if they have already responded, go to the ITI
+		{
+			setTimeout(showITI)
+		}
+	}
+	
+    function showFeedback() // fb time-out fxn
+	{
+        window.hasResponse = -1;
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillStyle="black";
+        ctx.font="75px Arial"; 
+        ctx.fillText("Respond quicker",(canvas.width / 2), (canvas.height / 2), 500); // 500 is to state limit of the canvas width
+        setTimeout(showITI, 1000);
+	}
+	
+	$("body").keypress(function(event) // in order to have fixed length trials, NO FUNCTIONS can be run inside the keypress function; also, clearTimeout CANNOT be used as that will erase the timeline linking the fxns
+	{        
+			if (window.hasResponsePR == 0) // this ensures that it's getting the key that was pressed AFTER the number stimulus was presented, even if it's in the ITI and not when the number is there
+			{
+				PRkeyPressed = String.fromCharCode(event.which); // identifies which key was pressed
+                if (PRkeyPressed == "z" || PRkeyPressed == "x" || PRkeyPressed == "n" || PRkeyPressed == "m")
+                {
+                    window.hasResponsePR = -1; // this makes certain that keypresses aren't logged after that
+					PRd4 = new Date();
+					PRResponset = PRd4.getTime() - PRrunStart;
+					PRrespTime = PRResponset - PRStimTime;
+				
+                    if (PRkeyPressed == PRPressCorrect) // compares keypress to the correct press for a trial
+					{
+						if (PRrespTime < 1000)
+						{
+							PRaccuracy = 1;
+							PRfeedbackType = 1;
+							PRACCCount++; 							
+						}
+						else
+						{
+							PRfeedbackType = 3;
+							PRaccuracy = 0;
+						}
+					}
+                    else // if they didn't press the right key, they might not have responded OR responded incorrectly
+					{
+						if (PRrespTime < 1000)
+						{
+							PRaccuracy = 0;
+							PRfeedbackType = 2;
+						}
+						else
+						{
+							PRfeedbackType = 3;
+							PRaccuracy = 0;
+						}
+					}
+                data[PRlogCounter++] = ["SCPractice:", 1, PRCounter, PRlogCounter, PRtrialCounter, PRrunCounter, Numbers[PRtrialCounter], PRResponseMatrix, PRkeyPressed, PRPressCorrect, PRfeedbackType, PRaccuracy, PRrespTime, PRACCCount];
+                }
+			}
+			if (window.hasResponse == 0) // this ensures that it's getting the key that was pressed AFTER the number stimulus was presented, even if it's in the ITI and not when the number is there
+			{
+                keyPressed = String.fromCharCode(event.which); // identifies which key was pressed
+                
+                if (keyPressed == "z" || keyPressed == "x" || keyPressed == "n" || keyPressed == "m")
+                {                
+                    window.hasResponse = -1; // this makes certain that keypresses aren't logged after that
+					d4 = new Date();
+					Responset = d4.getTime() - runStart;
+					respTime = Responset - ColorTime;
+				
+                    if (keyPressed == PressCorrect) // compares keypress to the correct press for a trial
+					{
+						if (respTime < 800)
+						{
+							accuracy = 1;
+							feedbackType = 0;
+							ACCCount++;
+						}
+						else
+						{
+							feedbackType = 1;
+							accuracy = 0;
+						}
+					}
+                    else // if they didn't press the right key, they might not have responded OR responded incorrectly
+					{
+						if (respTime < 800)
+						{
+							accuracy = 0;
+							feedbackType = 0;							
+						}
+						else
+						{
+							feedbackType = 1;
+							accuracy = 0;
+						}
+					}
+					
+					data[logCounter++] = ["SCResp:", 1, logCounter, trialCounter, MatrixCounter, runCounter, Congruent, Incongruent, StimuliPresented[MatrixCounter], StimProbTotal[MatrixCounter], TrialType, StroopNum[MatrixCounter], PressCorrect, ResponseMatrix, keyPressed, accuracy, respTime, feedbackType, runStart, ImagePresent, StimTime, ColorTime, Responset, ACCCount];
+                }
+			}
+    });
+	
+});	
+
+</script>
+</head>
+
+<body>
+<!--the HTML for the instructions-->
+<h2 id="InstructionsHeader" style="font-family:arial;font-size:30px">Instructions:</h2>
+<p id="ReadInstructions" style="font-family:arial;font-weight:bold; font-size:24px">Please read these instructions carefully before you begin the experiment.</p>
+<p id="Instructions" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions1" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions2" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions3" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions4" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions5" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<p id="Instructions6" style="font-family:arial;color:black;font-size:22px;text-align: left"></p>
+<button id="startPractice" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Click to exit instructions and start practice phase.</button>
+<button id="NextPRButton" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Next</button>
+<button id="NextButton" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Next</button>
+<button id="PRStartInstruct" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Next</button>
+<button id="SCStartInstruct" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Next</button>
+<button id="startSCtask" style="font-family:arial;color:black;font-size:20px;text-align: left; float: left;position: relative">Click to exit instructions and start task.</button>
+
+	<table>
+		<tr>
+			<td>
+				<p id="indicator" style="font-family: Arial; color: black; font-size: 50px; text-align:center; align: center; float: center"></p>
+				<!--the HTML for the practice task-->
+				<button id="endPractice" style="font-family: Arial; color: black; font-size: 20px; text-align:center; align: center">The practice round has ended. Click this button to continue onto the main task.</button>
+				<button id="PRresize" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Try resizing again.</button>
+                <p><button id="redo" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Click this button to try the practice round again.</button></p>
+				<p><button id="PRinstructions" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Click this button to return to the instructions.</button></p>
+				<p id="info" style="font-family: Arial; color: black; font-size: 24px; text-align:center; align: center; float: center">Once you're ready to start, press the button below.</p>
+				<p><button id ="startPracticeTask" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Start the Practice.</button></p>
+				
+				<!--the HTML for the regular task-->
+				<button id="endExpButton" style="font-family: Arial; color: black; font-size: 20px; text-align:center; align: center">This task has ended. Click this button to continue onto the next part of the study.</button>
+                <p><button id="endBlockButton" style="font-family: Arial; color: black; text-align:center; align: center; float: center">You may take a short break. Click this button when you're ready to continue the task.</button></p>
+				<p><button id="resize" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Try resizing again.</button></p>
+				<p> <button id ="startButton" style="font-family: Arial; color: black; text-align:center; align: center; float: center">Start the Main Task.</button></p>
+				
+				<form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
+				
+					<input type="hidden" id="assignmentId" name="assignmentId" value="">
+					<input type="hidden" id="workerId" name="workerId" value="">
+					<input type="hidden" id="hitId" name="hitId" value="">
+                    <input type="hidden" id="APs", name="APs", value="">
+					<input type="hidden" id="PRRTs", name="PRRTs", value="">
+					<input type="hidden" id="SCs", name="SCs", value="">       
+					<input type="hidden" id="ExpName" name="ExpName" value="SCP_R_LAB">
+					<input id="submitButton" style="font-family: Arial; color: black; font-size: 36px; text-align:center; align: center" type="submit" name="Finish" value="Submit">
+					
+				</form>
+				
+				<canvas id="myCanvas" width="600" height="600" style="user-select: none; -webkit-user-select:none; -moz-user-select:none"></canvas>
+			</td>
+		</tr>
+	</table>			
+</body>
+</html>
