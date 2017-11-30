@@ -1,0 +1,45 @@
+version,subjID,gender,age,ethnicity,race,Mem1,Mem2,Mem3,Mem4,ExplicitMem,Q1_SS_SystematicVariation,"If so, what?",Q2,Q3,Q4,ExplicitTaskAwareness,Q1_SC_SystematicVariation,Q1_SCT_SystematicVariation,Q2_SceneSkyPresence,Q2_SceneColorScheme,Q2_SceneTreeFrequency,Q2_ImageType,Q2_FeatureType,Q2_LightType,Q3_SC_ForcedChoicePerformance,Q3_SCT_ForcedChoicePerformance,Q3_SC1,Q3_SC2,Q3_SC3,Q3_SC4,Q3_SC_ForcedChoicePerformance,Q3_SCT1,Q3_SCT2,Q3_SCT3,Q3_SCT4,Q3_SCT_ForcedChoicePerformance
+1,1,Female,23,Non-Hispanic/Latino,White/Caucasian,0,0,1,0,1,1,pictures represented colors,0,1,1,2,0,0,18,91,17,71,85,19,3,1,0,1,1,1,3,0,1,0,0,1
+4,2,Female,18,Non-Hispanic/Latino,White/Caucasian,1,0,0,1,2,0,,0,0,0,0,1,0,15,66,52,65,32,51,3,1,0,1,1,1,3,0,1,0,0,1
+1,4,Female,18,Non-Hispanic/Latino,Asian,1,1,1,1,4,1,"The skinnier guy was often paired up with the mountains, while the other guy was usually paired with the canyons. I think the tilted house was usually paired with the forest? And the other house was paired with the waterfall. But the pairings were not consistent and therefore not reliable in determining which scene was going to show up. ",1,1,1,3,0,0,52,44,51,46,48,48,3,1,1,1,0,1,3,1,0,0,0,1
+4,5,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,That each picture only would sometimes match with the second picture.,1,0,0,1,1,0,50,50,38,50,51,51,2,2,0,1,1,0,2,1,0,1,0,2
+3,6,Female,21,Non-Hispanic/Latino,White/Caucasian,0,0,0,0,0,0,,0,0,0,0,0,0,49,51,53,50,55,51,2,2,1,1,0,0,2,0,0,1,1,2
+3,7,Female,18,Non-Hispanic/Latino,Asian,0,0,0,1,1,0,,0,1,1,2,0,0,50,50,50,50,50,50,4,4,1,1,1,1,4,1,1,1,1,4
+3,8,Female,19,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,The forest being paired with the boy with the flatter top of his head.,0,0,0,0,0,0,50,73,36,48,33,59,2,4,0,1,1,0,2,1,1,1,1,4
+4,9,Female,19,Non-Hispanic/Latino,White/Caucasian,0,0,0,0,0,0,,0,1,1,2,1,0,70,33,20,63,75,29,2,2,1,0,0,1,2,0,1,1,0,2
+1,10,Male,18,Non-Hispanic/Latino,Asian,1,1,1,1,4,0,,0,0,1,1,0,0,0,69,0,46,0,0,2,2,1,0,0,1,2,1,0,1,0,2
+3,11,Female,18,Hispanic/Latino,White/Caucasian,1,1,1,1,4,0,,0,0,0,0,0,0,55,46,62,73,47,68,1,2,0,0,0,1,1,0,1,1,0,2
+2,12,Female,18,Non-Hispanic/Latino,Asian,1,1,1,1,4,0,,0,1,1,2,0,0,7,64,87,29,14,89,2,2,1,0,0,1,2,1,0,0,1,2
+2,13,Male,18,Non-Hispanic/Latino,Black/African American,1,0,0,1,2,1,there were two faces,0,1,0,1,1,0,23,49,85,22,66,53,2,2,1,0,1,0,2,1,0,0,1,2
+4,14,Female,18,Non-Hispanic/Latino,White/Caucasian,0,1,1,0,2,0,,0,0,0,0,0,0,51,86,87,49,50,67,4,4,1,1,1,1,4,1,1,1,1,4
+3,15,Female,18,Non-Hispanic/Latino,Asian,1,1,1,1,4,0,,0,0,0,0,1,1,33,62,82,73,50,51,4,4,1,1,1,1,4,1,1,1,1,4
+3,18,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,0,,0,0,1,1,1,1,38,54,78,54,54,52,2,0,0,1,0,1,2,0,0,0,0,0
+4,19,Female,18,Non-Hispanic/Latino,Asian,1,1,1,1,4,0,,0,0,0,0,0,0,50,50,0,50,50,50,2,2,0,1,1,0,2,0,1,1,0,2
+2,21,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,Each face and house was in general paired with a different landscape.  This didn't occur the entire time but happened very frequently,1,1,1,3,0,0,51,51,52,20,16,20,0,0,0,0,0,0,0,0,0,0,0,0
+1,22,Female,21,Non-Hispanic/Latino,White/Caucasian,0,1,0,0,1,0,,0,0,0,0,1,1,20,51,10,50,32,63,2,2,1,0,1,0,2,1,0,1,0,2
+1,23,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,i thought they matched together quite a few times,0,0,0,0,0,0,52,52,52,68,41,72,4,0,1,1,1,1,4,0,0,0,0,0
+2,24,Female,18,Do Not Wish to Reply,White/Caucasian,1,1,0,0,2,0,,0,0,1,1,0,0,48,65,35,55,33,68,2,2,1,0,1,0,2,1,0,0,1,2
+3,25,Male,19,Non-Hispanic/Latino,White/Caucasian,1,0,1,0,2,1,certain colors were paired with certain pictures that had similar or complementary colors,0,0,0,0,0,0,50,50,50,33,43,60,0,2,0,0,0,0,0,0,1,1,0,2
+2,26,Female,19,Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,"darker haired man often paired with water or forest, other man often paired with mountain or forest, houses usually paired with mountain or canyon",1,0,1,2,0,0,50,50,50,50,50,50,2,2,0,1,1,0,2,0,1,1,0,2
+1,28,Female,18,Non-Hispanic/Latino,Asian,1,1,1,0,3,1,"I don't exactly remember, but I definitely noticed something paired with the left two options and another paired with the right two button options.",0,1,0,1,0,0,50,83,27,67,77,86,3,2,1,0,1,1,3,0,1,0,1,2
+2,29,Female,18,Non-Hispanic/Latino,Black/African American,1,1,1,1,4,1,"The west coast style house was mostly paired with the canyon, one man was with the forest and another with the waterfall, and the other house was with the mountain",1,1,1,3,0,0,67,35,17,32,70,22,0,2,0,0,0,0,0,0,1,1,0,2
+3,33,Female,20,Non-Hispanic/Latino,White/Caucasian,1,1,0,1,3,1,the mountains were usually paired with a face while the canyons were usually paired with a house,0,0,0,0,0,1,50,50,51,52,52,52,2,1,0,1,1,0,2,0,0,0,1,1
+4,34,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,0,0,2,0,,0,0,0,0,0,0,38,74,34,44,68,45,2,0,0,1,0,1,2,0,0,0,0,0
+2,35,Female,18,Non-Hispanic/Latino,White/Caucasian,0,1,0,1,2,0,,0,0,0,0,0,0,15,10,86,16,66,24,2,2,1,0,0,1,2,0,1,0,1,2
+1,36,Male,18,Non-Hispanic/Latino,Black/African American,1,0,0,0,1,0,,0,1,0,1,1,0,50,50,50,50,50,50,0,2,0,0,0,0,0,1,0,0,1,2
+4,37,Male,21,Non-Hispanic/Latino,Asian,1,1,0,1,3,0,,0,0,0,0,0,0,51,50,51,50,50,51,2,2,0,1,1,0,2,0,1,0,1,2
+3,38,Male,19,Non-Hispanic/Latino,White/Caucasian,1,1,0,0,2,0,,1,0,0,1,0,0,50,50,50,50,50,50,2,0,0,1,1,0,2,0,0,0,0,0
+2,39,Female,20,Non-Hispanic/Latino,Asian,1,0,1,0,2,0,,0,0,0,0,1,1,50,50,50,50,50,50,2,2,0,1,1,0,2,0,1,0,1,2
+4,40,Female,19,Non-Hispanic/Latino,White/Caucasian,0,1,0,1,2,0,,1,0,0,1,0,0,33,49,49,50,49,50,2,2,0,1,0,1,2,0,1,0,1,2
+3,41,Female,21,Non-Hispanic/Latino,Asian,0,0,0,0,0,0,,0,0,1,1,0,0,50,50,50,50,50,50,0,0,0,0,0,0,0,0,0,0,0,0
+1,42,Female,19,Non-Hispanic/Latino,White/Caucasian,1,0,1,1,3,1,faces with left hand and houses with right hand,1,0,0,1,0,0,50,50,50,50,50,50,2,2,1,0,0,1,2,0,1,1,0,2
+4,43,Female,18,Non-Hispanic/Latino,White/Caucasian,1,1,0,1,3,0,,0,1,1,2,0,0,50,49,50,31,32,33,2,1,1,0,1,0,2,0,1,0,0,1
+4,45,Female,18,Non-Hispanic/Latino,Black/African American,0,1,0,1,2,0,,0,0,0,0,0,0,35,64,95,65,48,47,1,3,0,1,0,0,1,1,0,1,1,3
+1,46,Male,19,Non-Hispanic/Latino,Asian,1,1,1,0,3,0,,0,1,0,1,0,0,50,47,48,51,44,21,2,2,0,1,1,0,2,0,1,1,0,2
+1,47,Female,19,Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,"The sceneries were usually paired with a face or house, but sometimes they would be randomized. Then they would return to the pairs in the following question.",1,1,1,3,0,0,50,50,50,50,59,41,2,2,1,0,0,1,2,1,0,0,1,2
+2,48,Male,20,Non-Hispanic/Latino,Asian,0,0,0,0,0,0,,0,0,0,0,0,0,50,50,50,51,50,50,0,2,0,0,0,0,0,0,1,0,1,2
+2,49,Female,18,Hispanic/Latino,Multiracial,1,1,1,1,4,1,"The man with the rounder face was usually paired with the forest, the other man was usually paired with the water fall, the house taken at a front view was usually paired with the mountain and the other house was usually paired with the canyon",1,0,0,1,0,1,67,33,85,33,68,51,0,2,0,0,0,0,0,1,0,1,0,2
+2,51,Female,22,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,The pairings just identified were often followed. And after you got one correct it often did that one again,1,1,1,3,0,0,50,50,51,50,51,51,1,0,0,0,0,1,1,0,0,0,0,0
+3,52,Male,18,Non-Hispanic/Latino,Asian,0,1,0,0,1,0,,0,1,0,1,0,1,67,52,68,69,39,55,2,2,0,1,0,1,2,0,1,0,1,2
+4,53,Female,18,Non-Hispanic/Latino,White/Caucasian,1,0,1,1,3,0,,0,0,0,0,1,0,36,69,64,69,50,51,2,0,1,0,1,0,2,0,0,0,0,0
+3,54,Male,21,Non-Hispanic/Latino,White/Caucasian,1,1,1,1,4,1,"If the picture of the house or the face was repeated, the scene shown after seemed likely to change. Also house/face was associated with a single scene and could be used as a tool for prediction.",1,0,0,1,0,0,41,42,43,44,45,44,4,2,1,1,1,1,4,0,1,1,0,2
