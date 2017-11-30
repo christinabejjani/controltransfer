@@ -1,0 +1,51 @@
+html{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background-color: white;
+}
+
+table {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+}
+
+#redo {
+	vertical-align: middle;
+	position: relative;
+	text-align: center;
+}
+
+/*#instructions{
+	vertical-align: middle;
+	position: relative;
+	text-align: center;
+}*/
+
+#startButton{
+    vertical-align: middle;
+	position: relative;
+	text-align: center;
+}
+
+#info{
+    vertical-align: middle;
+	position: relative;
+	text-align: center;
+}
