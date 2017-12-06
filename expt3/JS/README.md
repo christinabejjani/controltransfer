@@ -2,7 +2,7 @@
 
 To counterbalance the assignment of paired-associates, we ran four task versions. You'll see four corresponding folders with each of the different task versions. The code should not be different; the only difference between the folders is what file is named as S1_1, S1_2, etc.
 
-These experiments were run in the lab, on the same computer, using JavaScript.
+This experiment was run in the lab, on the same computer, using JavaScript.
 
 You can also see the JavaScript files in action:
 * Main Menu file: https://people.duke.edu/~cb383/SCP_R/v1/MenuFinal_v1.html (Just replace v1 with v2 / 3 / 4 to get the other versions).
