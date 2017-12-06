@@ -2,7 +2,7 @@
 
 For these experiments, to counterbalance the assignment of paired-associates, we ran four task versions. You'll see four corresponding folders with each of the different task versions. The code should not be different; the only difference between the folders is what file is named as S1_1, S1_2, etc.
 
-These experiments were run on Amazon Mechanical Turk and were thus coded in Javascript.
+Experiments 1 & 2 were run on Amazon Mechanical Turk and were thus coded in Javascript.
 
 You can also see the JavaScript files in action:
 * S-S Phase Instructions: https://people.duke.edu/~cb383/controltransfer/expt1/JS/v1/SSInstructions_v1.html
