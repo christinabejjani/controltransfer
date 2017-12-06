@@ -2,7 +2,7 @@
 
 In experiment 2, we scrambled the initial paired associates. Thus, it was not necessary to have four task versions, but I did this to stay consistent.
 
-These experiments were run on Amazon Mechanical Turk and were thus coded in Javascript.
+Experiments 1 & 2 were run on Amazon Mechanical Turk and were thus coded in Javascript.
 
 You can also see the JavaScript files in action:
 * S-S Phase Instructions: https://people.duke.edu/~cb383/controltransfer/expt2/JS/v1/SSInstructions_v1.html
