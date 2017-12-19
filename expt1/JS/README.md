@@ -1,5 +1,7 @@
 # Javascript Files:
 
+*Please note that the most up-to-date versions of the JS files are in expt 3.*
+
 For these experiments, to counterbalance the assignment of paired-associates, we ran four task versions. You'll see four corresponding folders with each of the different task versions. The code should not be different; the only difference between the folders is what file is named as S1_1, S1_2, etc.
 
 Experiments 1 & 2 were run on Amazon Mechanical Turk and were thus coded in Javascript.
