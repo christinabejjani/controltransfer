@@ -4,4 +4,4 @@
 
 In experiment 2, we scrambled the initial paired associates from experiment 1. Thus, it was not necessary to have four task versions, but I did this to stay consistent.
 
-This experiment was run in May 2017 on Amazon Mechanical Turk. To run the experiment, you would download the task folder and list the Main Menu file as the "Survey Link" on Amazon Mechanical Turk.
+This experiment was run in May 2017 on Amazon Mechanical Turk. To run the experiment, you would download the task folder, put it somewhere where html is public (published on github? dropbox? or if your university has a personal home directory, as Duke does), and list the Main Menu file as the "Survey Link" on Amazon Mechanical Turk.
