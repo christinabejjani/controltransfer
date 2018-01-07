@@ -1,11 +1,7 @@
 # Javascript Files:
 
+*Please contact me at christina.bejjani AT duke.edu if you are planning on using this code for an experiment.* I have since updated the code in a variety of ways that I had not anticipated when I ran this experiment.
+
 To counterbalance the assignment of paired-associates, we ran four task versions. You'll see four corresponding folders with each of the different task versions. The code should not be different; the only difference between the folders is what file is named as S1_1, S1_2, etc.
 
-This experiment was run in the lab, on the same computer, using JavaScript.
-
-You can also see the JavaScript files in action:
-* Main Menu file: https://people.duke.edu/~cb383/SCP_R/v1/MenuFinal_v1.html (Just replace v1 with v2 / 3 / 4 to get the other versions).
-  1. Note: To view the S-S Phase, just click on the "Click to start the first task" button; for the S-C Phase, open up the JavaScript Console (F12 on windows chrome) and type updateMainMenu(1); for the S-CT Phase, type updateMainMenu(2); for the debriefing, type updateMainMenu(3).
-  1. This is the MOST up to date version of this control transfer task. I combined all the instructions files within their individual task phase files, and combined the S-C Phase with its practice phase as well.
-  1. You must put https://. http:// will result in an error. So will viewing any of the tasks outside of the main menu file (because I assign values to variables based on the Main Menu file).
+This experiment was run in the lab, on the same computer, from September to November 2017. To run this experiment, you would download the folder, put it somewhere where html is public (published on github? dropbox? or if your university has a personal home directory, as Duke does), and type in https:// before the main menu link (it must be https:// and not http://; https will not work.).
